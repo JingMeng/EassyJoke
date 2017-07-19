@@ -12,6 +12,8 @@ import com.baimeng.framelibrary.base.BaseSkinActivity;
 import com.baimeng.framelibrary.base.DefaultNavigationBar;
 import com.baimeng.framelibrary.base.ExceptionCrashHandler;
 import com.baimeng.framelibrary.base.HttpCallBack;
+import com.baimeng.framelibrary.db.DaoSupportFactory;
+import com.baimeng.framelibrary.db.IDaoSupport;
 import com.baimeng.library.dialog.AlertDialog;
 import com.baimeng.library.fixbug.FixDexManager;
 import com.baimeng.library.http.HttpUtils;
@@ -151,6 +153,8 @@ public class MainActivity extends BaseSkinActivity {
 //            Toast.makeText(this, "测试："+ (2/0), Toast.LENGTH_SHORT).show();
             Log.e("=======","img点击");
             showDialog();
+            IDaoSupport<Person> dao = DaoSupportFactory.getFactory().getDao(Person.class);
+            dao.insert(new Person("张思宁",23));
         }
 
     }
