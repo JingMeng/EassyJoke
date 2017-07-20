@@ -29,6 +29,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -183,7 +184,12 @@ public class MainActivity extends BaseSkinActivity {
 
             //测试数据库框架
             IDaoSupport<Person> dao = DaoSupportFactory.getFactory().getDao(Person.class);
-            dao.insert(new Person("张思宁",23));
+            List<Person> persons = new ArrayList<>();
+            for (int i = 0 ; i < 10 ; i++){
+                persons.add(new Person("张思宁==="+i,23));
+            }
+            dao.insert(persons);
+            //dao.insert();
         }
 
     }

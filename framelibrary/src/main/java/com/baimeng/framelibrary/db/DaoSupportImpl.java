@@ -1,10 +1,13 @@
 package com.baimeng.framelibrary.db;
 
+import android.content.ContentValues;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import java.io.File;
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.util.List;
 
 /**
  * Created by Administrator on 2017/7/19.
@@ -15,9 +18,38 @@ public class DaoSupportImpl<T> implements IDaoSupport<T> {
     private Class<T> mClazz;
 
     @Override
-    public int insert(T t) {
+    public long insert(T obj) {
+        ContentValues values = getContentValueByObj(obj);
+        return mSqliteDataBase.insert(DaoUtils.getTableName(mClazz),null,values);
+    }
 
-        return 0;
+    @Override
+    public void insert(List<T> datas) {
+        mSqliteDataBase.beginTransaction();
+        for (T data : datas) {
+            insert(data);
+        }
+        mSqliteDataBase.setTransactionSuccessful();
+        mSqliteDataBase.endTransaction();
+    }
+
+    //利用反射将泛型类转换成ContentValue
+    private ContentValues getContentValueByObj(T obj) {
+        ContentValues values = new ContentValues() ;
+        Field[] fields = mClazz.getDeclaredFields();
+        try {
+            for (Field field : fields) {
+                field.setAccessible(true);
+                String key = field.getName();
+                Object value = field.get(obj);
+                //value应该是类型Integer，Long等等
+                Method putMethod = ContentValues.class.getDeclaredMethod("put", String.class, value.getClass());
+                putMethod.invoke(values,key,value);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return values ;
     }
 
     public void init (SQLiteDatabase database ,Class<T> clazz){

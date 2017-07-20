@@ -2,6 +2,7 @@ package com.baimeng.framelibrary.db;
 
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Environment;
+import android.util.Log;
 
 import com.baimeng.library.utils.XPermissionUtils;
 
@@ -23,6 +24,7 @@ public class DaoSupportFactory {
                 dbRoot.mkdirs();
             }
             File dbFile = new File(dbRoot, "nhdz.db");
+            Log.i("=======","数据库创建成功"+dbFile.getAbsolutePath());
             mSqLiteDatabase = SQLiteDatabase.openOrCreateDatabase(dbFile, null);
 
     }
