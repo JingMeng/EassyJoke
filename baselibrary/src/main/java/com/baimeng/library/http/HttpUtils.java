@@ -1,9 +1,6 @@
 package com.baimeng.library.http;
 
 import android.content.Context;
-import android.os.Build;
-import android.support.annotation.RequiresApi;
-import android.util.ArrayMap;
 
 import java.io.StringWriter;
 import java.lang.reflect.ParameterizedType;
@@ -29,7 +26,7 @@ public class HttpUtils {
     private static final int POST_TYPE = 0x0011 ;
     private static final int GET_TYPE = 0x0012 ;
 
-    public HttpUtils(Context context){
+    private HttpUtils(Context context){
         mContext = context ;
         mParams = new HashMap<String , Object>() ;
     }

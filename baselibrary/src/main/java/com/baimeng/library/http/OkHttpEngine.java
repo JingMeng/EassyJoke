@@ -12,6 +12,7 @@ import java.util.Map;
 
 import okhttp3.Call;
 import okhttp3.Callback;
+import okhttp3.FormBody;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
@@ -85,10 +86,13 @@ public class OkHttpEngine implements IHttpEngine {
     }
 
 
-    private RequestBody appendBody(Map<String, Object> params) {
+    protected RequestBody appendBody(Map<String, Object> params) {
         MultipartBody.Builder builder = new MultipartBody.Builder()
                 .setType(MultipartBody.FORM);
-        addParams(builder,params);
+        if(params == null || params.size() == 0){
+            FormBody.Builder formBodyBuilder = new FormBody.Builder();
+            return  formBodyBuilder.build() ;
+        }
         return builder.build();
     }
 

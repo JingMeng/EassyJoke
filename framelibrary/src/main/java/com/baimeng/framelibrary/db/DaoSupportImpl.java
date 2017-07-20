@@ -1,6 +1,7 @@
 package com.baimeng.framelibrary.db;
 
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import java.io.File;
 import java.lang.reflect.Field;
@@ -23,7 +24,7 @@ public class DaoSupportImpl<T> implements IDaoSupport<T> {
         this.mSqliteDataBase = database ;
         this.mClazz = clazz ;
         StringBuffer sb = new StringBuffer();
-        sb.append("create table if not exists ").append(DaoUtils.getTableName(clazz)).append("(id integer primay key autoincrement, ");
+        sb.append("create table if not exists ").append(DaoUtils.getTableName(clazz)).append("(id integer primay key auto_increment, ");
         Field[] fields = mClazz.getDeclaredFields();
         for (Field field : fields){
             field.setAccessible(true);
@@ -31,7 +32,7 @@ public class DaoSupportImpl<T> implements IDaoSupport<T> {
             String type = field.getType().getSimpleName();
             sb.append(name).append(DaoUtils.getColumnType(type)).append(", ");
         }
-        StringBuffer sqliteStr = sb.replace(sb.length() - 2, sb.length(), ")");
+        StringBuffer sqliteStr = sb.replace(sb.length() - 2, sb.length(), ");");
         mSqliteDataBase.execSQL(sqliteStr.toString());
     }
 

@@ -1,5 +1,6 @@
 package com.baimeng.eassyjoke;
 
+import android.Manifest;
 import android.os.Environment;
 import android.util.Log;
 import android.view.View;
@@ -7,6 +8,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.baimeng.eassyjoke.bean.AMainIndicatorShowDto;
+import com.baimeng.eassyjoke.bean.AResponse;
 import com.baimeng.framelibrary.base.BaseApplication;
 import com.baimeng.framelibrary.base.BaseSkinActivity;
 import com.baimeng.framelibrary.base.DefaultNavigationBar;
@@ -27,6 +30,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class MainActivity extends BaseSkinActivity {
@@ -39,12 +43,22 @@ public class MainActivity extends BaseSkinActivity {
     protected void initData() {
         tv.setText("口活的活好");
 
+        //测试联网框架
         Map<String, Object> params = new HashMap<>();
         params.put("key","a0126d32f1215b0e769fd7c352bafd01");
+        HttpUtils.with(this).post().url("http://192.168.20.225:8989/snmis/androidAnalysisMgmt/listMainIndicatorShow.do")
+                .execute(new HttpCallBack<AResponse<List<AMainIndicatorShowDto>>>() {
+                    @Override
+                    public void onError(Exception e) {
 
-        new HttpUtils(this).post().url("http://v.juhe.cn/WNXG/city")
-                .addParams(params)
-                .execute();
+                    }
+
+                    @Override
+                    public void onSuccess(AResponse<List<AMainIndicatorShowDto>> result) {
+                        Log.i("返回实体=========",result.toString());
+                    }
+                });
+
         //获取上次崩溃文件上传至服务器
         File crashFile = ExceptionCrashHandler.getInstance().getCrashFile();
         if(crashFile.exists()){
@@ -63,7 +77,6 @@ public class MainActivity extends BaseSkinActivity {
         }
 
         //获取本地内存卡中的fix.patch
-
         XPermissionUtils.requestPermissions(this,0,new String [] {android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
                 android.Manifest.permission.READ_EXTERNAL_STORAGE},new XPermissionUtils.OnPermissionListener(){
             @Override
@@ -121,6 +134,20 @@ public class MainActivity extends BaseSkinActivity {
 
     @Override
     protected void initView() {
+        XPermissionUtils.requestPermissions(this, 0, new String[]{
+                        Manifest.permission.READ_EXTERNAL_STORAGE,
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE}
+                , new XPermissionUtils.OnPermissionListener() {
+                    @Override
+                    public void onPermissionGranted() {
+                        Log.i("TAG==========","获取到权限");
+                    }
+
+                    @Override
+                    public void onPermissionDenied() {
+                        Log.i("TAG==========","拒绝权限");
+                    }
+                });
     }
 
     @Override
@@ -153,6 +180,8 @@ public class MainActivity extends BaseSkinActivity {
 //            Toast.makeText(this, "测试："+ (2/0), Toast.LENGTH_SHORT).show();
             Log.e("=======","img点击");
             showDialog();
+
+            //测试数据库框架
             IDaoSupport<Person> dao = DaoSupportFactory.getFactory().getDao(Person.class);
             dao.insert(new Person("张思宁",23));
         }

@@ -5,7 +5,6 @@ import android.content.SharedPreferences;
 import android.content.SyncRequest;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.content.pm.ShortcutInfo;
 import android.os.Build;
 import android.os.Environment;
 import android.util.Log;

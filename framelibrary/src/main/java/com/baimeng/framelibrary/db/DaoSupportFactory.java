@@ -13,11 +13,10 @@ import java.io.File;
 
 public class DaoSupportFactory {
     private static DaoSupportFactory mInstance ;
-    private static SQLiteDatabase mSqLiteDatabase ;
+    private SQLiteDatabase mSqLiteDatabase ;
 
     //持有外部数据库的引用
     private DaoSupportFactory(){
-        if(Environment.getExternalStorageState() == Environment.MEDIA_MOUNTED){
             File dbRoot = new File(Environment.getExternalStorageDirectory().getAbsolutePath()
                     + File.separator + "nhdz" + File.separator + "database");
             if(!dbRoot.exists()){
@@ -25,7 +24,6 @@ public class DaoSupportFactory {
             }
             File dbFile = new File(dbRoot, "nhdz.db");
             mSqLiteDatabase = SQLiteDatabase.openOrCreateDatabase(dbFile, null);
-        }
 
     }
     public static DaoSupportFactory getFactory(){
