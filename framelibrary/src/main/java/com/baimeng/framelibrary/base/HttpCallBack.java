@@ -24,7 +24,6 @@ public abstract class HttpCallBack <T> implements EngineCallBack {
         onPreExecute();
     }
     public void onPreExecute(){
-
     };
 
     @Override

@@ -3,8 +3,8 @@ package com.baimeng.framelibrary.base;
 import android.app.Application;
 
 import com.alipay.euler.andfix.patch.PatchManager;
-import com.baimeng.library.fixbug.FixDexManager;
-import com.baimeng.library.utils.VersionUtils;
+import com.baimeng.framelibrary.db.http.OkHttpEngine;
+import com.baimeng.library.http.HttpUtils;
 
 /**
  * Created by Administrator on 2017/7/6.
@@ -19,6 +19,8 @@ public class BaseApplication extends Application {
         super.onCreate();
         //程序入口设置系统全局异常捕捉类
         ExceptionCrashHandler.getInstance().init(this);
+
+        HttpUtils.init(new OkHttpEngine());
 
         //初始化Andfix的patchManager
 //        patchManager = new PatchManager(this);

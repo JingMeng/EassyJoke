@@ -22,7 +22,7 @@ public interface IDaoSupport<T> {
 
     //List<T> query() ;
 
-    int delete(String whereClause , String [] whereArgs);
+    int delete(String whereClause , String... whereArgs);
 
     int update(T obj , String whereClause , String... whereArgs);
 }

@@ -44,21 +44,23 @@ public class MainActivity extends BaseSkinActivity {
     protected void initData() {
         tv.setText("口活的活好");
 
-        //测试联网框架
-        Map<String, Object> params = new HashMap<>();
-        params.put("key","a0126d32f1215b0e769fd7c352bafd01");
-        HttpUtils.with(this).isCache(true).post().url("http://192.168.20.225:8989/snmis/androidAnalysisMgmt/listMainIndicatorShow.do")
-                .execute(new HttpCallBack<AResponse<List<AMainIndicatorShowDto>>>() {
-                    @Override
-                    public void onError(Exception e) {
+        //获取本地内存卡中的fix.patch
+        XPermissionUtils.requestPermissions(this,0,new String [] {android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                android.Manifest.permission.READ_EXTERNAL_STORAGE},new XPermissionUtils.OnPermissionListener(){
+            @Override
+            public void onPermissionGranted() {
+                //阿里的热修复
+                // aliFixBug();
 
-                    }
+                //自己的热修复
+                fixDexBug();
+            }
 
-                    @Override
-                    public void onSuccess(AResponse<List<AMainIndicatorShowDto>> result) {
-                        Log.i("返回实体=========",result.toString());
-                    }
-                });
+            @Override
+            public void onPermissionDenied() {
+
+            }
+        });
 
         //获取上次崩溃文件上传至服务器
         File crashFile = ExceptionCrashHandler.getInstance().getCrashFile();
@@ -76,26 +78,6 @@ public class MainActivity extends BaseSkinActivity {
 
             }
         }
-
-        //获取本地内存卡中的fix.patch
-        XPermissionUtils.requestPermissions(this,0,new String [] {android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                android.Manifest.permission.READ_EXTERNAL_STORAGE},new XPermissionUtils.OnPermissionListener(){
-            @Override
-            public void onPermissionGranted() {
-                //阿里的热修复
-               // aliFixBug();
-
-                //自己的热修复
-                fixDexBug();
-            }
-
-            @Override
-            public void onPermissionDenied() {
-
-            }
-        });
-
-
 
 //        AsyncTask <Void,String,Void> task = new AsyncTask<Void,String ,Void>(){
 //            @Override
@@ -142,6 +124,8 @@ public class MainActivity extends BaseSkinActivity {
                     @Override
                     public void onPermissionGranted() {
                         Log.i("TAG==========","获取到权限");
+                        //请求网络
+                        requestNet();
                     }
 
                     @Override
@@ -149,6 +133,52 @@ public class MainActivity extends BaseSkinActivity {
                         Log.i("TAG==========","拒绝权限");
                     }
                 });
+    }
+
+    private void requestNet() {
+        //测试联网框架
+        Map<String, Object> params = new HashMap<>();
+        params.put("key","a0126d32f1215b0e769fd7c352bafd01");
+//        HttpUtils.with(this).
+//                isCache(true).
+//                get().url("http://v.juhe.cn/WNXG/city")
+//                .addParams(params)
+//                .execute(new HttpCallBack<String>() {
+//                    @Override
+//                    public void onSuccess(String result) {
+//                        Log.i("成功============",result);
+//                    }
+//
+//                    @Override
+//                    public void onError(Exception e) {
+//                        Log.i("失败===========",e.toString());
+//                    }
+//                });
+
+        HttpUtils.with(this).isCache(true).get().url("http://v.juhe.cn/WNXG/city")
+                .addParams(params)
+                .execute(new HttpCallBack<String>() {
+                    @Override
+                    public void onSuccess(String result) {
+                        Log.i("成功",result);
+                    }
+
+                    @Override
+                    public void onError(Exception e) {
+                        Log.i("失败",e.toString());
+                    }
+                });
+//                .execute(new HttpCallBack<AResponse<List<AMainIndicatorShowDto>>>() {
+//                    @Override
+//                    public void onError(Exception e) {
+//                        Log.i("Error++++++++++++++",e.toString());
+//                    }
+//
+//                    @Override
+//                    public void onSuccess(AResponse<List<AMainIndicatorShowDto>> result) {
+//                        Log.i("返回实体=========",result.toString());
+//                    }
+//                });
     }
 
     @Override

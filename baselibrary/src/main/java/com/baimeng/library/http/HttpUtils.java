@@ -1,6 +1,7 @@
 package com.baimeng.library.http;
 
 import android.content.Context;
+import android.util.Log;
 
 import java.io.StringWriter;
 import java.lang.reflect.ParameterizedType;
@@ -75,9 +76,9 @@ public class HttpUtils {
         }
         callBack.onPreExecute(mContext,mParams);
         if(mType == POST_TYPE){
-            post  (mContext ,mUrl,mParams,callBack);
+            post  (mUrl,mParams,callBack);
         }else if(mType == GET_TYPE){
-            get(mContext ,mUrl,mParams,callBack);
+            get(mUrl,mParams,callBack);
         }
     }
 
@@ -85,7 +86,8 @@ public class HttpUtils {
         execute(null);
     }
 
-    private static IHttpEngine mHttpEngine  = new OkHttpEngine();
+    //private static IHttpEngine mHttpEngine  = new OkHttpEngine();
+    private static IHttpEngine mHttpEngine  = null;
 
     //可以在Application中初始化引擎
     public static void init(IHttpEngine engine){
@@ -96,13 +98,13 @@ public class HttpUtils {
         mHttpEngine = engine ;
     }
 
-    private void get(Context context ,String url, Map<String, Object> params, EngineCallBack callBack) {
-        mHttpEngine.get(context ,url,params,callBack);
+    private void get(String url, Map<String, Object> params, EngineCallBack callBack) {
+        mHttpEngine.get(mContext ,mCache ,url,params,callBack);
     }
 
 
-    private void post(Context context ,String url, Map<String, Object> params, EngineCallBack callBack) {
-        mHttpEngine.post(context ,url,params,callBack);
+    private void post(String url, Map<String, Object> params, EngineCallBack callBack) {
+        mHttpEngine.post(mContext ,mCache ,url,params,callBack);
     }
 
     public static String joinParams(String url, Map<String, Object> params) {
