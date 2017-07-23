@@ -26,6 +26,9 @@ public class HttpUtils {
     private static final int POST_TYPE = 0x0011 ;
     private static final int GET_TYPE = 0x0012 ;
 
+    //是否缓存数据，默认不缓存
+    private boolean mCache = false;
+
     private HttpUtils(Context context){
         mContext = context ;
         mParams = new HashMap<String , Object>() ;
@@ -48,6 +51,12 @@ public class HttpUtils {
     public HttpUtils get(){
         mType = GET_TYPE ;
         return this ;
+    }
+
+    //设置属否缓存数据
+    public HttpUtils isCache(boolean isCache){
+        mCache = isCache ;
+        return this;
     }
 
     public HttpUtils addParams(String key , Object value){

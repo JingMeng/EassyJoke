@@ -1,5 +1,9 @@
 package com.baimeng.framelibrary.db;
 
+import android.text.TextUtils;
+
+import java.util.Locale;
+
 /**
  * Created by Administrator on 2017/7/19.
  */
@@ -26,5 +30,12 @@ public class DaoUtils {
             value = " long" ;
         }
         return value ;
+    }
+
+    public static String capitalize(String string) {
+        if (!TextUtils.isEmpty(string)) {
+            return string.substring(0, 1).toUpperCase(Locale.US) + string.substring(1);
+        }
+        return string == null ? null : "";
     }
 }

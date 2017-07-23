@@ -47,7 +47,7 @@ public class MainActivity extends BaseSkinActivity {
         //测试联网框架
         Map<String, Object> params = new HashMap<>();
         params.put("key","a0126d32f1215b0e769fd7c352bafd01");
-        HttpUtils.with(this).post().url("http://192.168.20.225:8989/snmis/androidAnalysisMgmt/listMainIndicatorShow.do")
+        HttpUtils.with(this).isCache(true).post().url("http://192.168.20.225:8989/snmis/androidAnalysisMgmt/listMainIndicatorShow.do")
                 .execute(new HttpCallBack<AResponse<List<AMainIndicatorShowDto>>>() {
                     @Override
                     public void onError(Exception e) {
@@ -184,12 +184,32 @@ public class MainActivity extends BaseSkinActivity {
 
             //测试数据库框架
             IDaoSupport<Person> dao = DaoSupportFactory.getFactory().getDao(Person.class);
-            List<Person> persons = new ArrayList<>();
-            for (int i = 0 ; i < 10 ; i++){
-                persons.add(new Person("张思宁==="+i,23));
-            }
-            dao.insert(persons);
-            //dao.insert();
+            //插入测试
+//            List<Person> persons = new ArrayList<>();
+//            for (int i = 0 ; i < 5000 ; i++){
+//                persons.add(new Person("张思宁==="+i,23));
+//            }
+//            long start = System.currentTimeMillis();
+//            dao.insert(persons);
+//            Toast.makeText(this,"耗时===="+(System.currentTimeMillis() - start) ,Toast.LENGTH_SHORT).show();
+//            //dao.insert();
+
+            //查询测试
+
+//            List<Person> query = dao.query();
+//            Toast.makeText(this,"差到"+query.size()+"条数据",Toast.LENGTH_SHORT).show();
+
+//            //删除数据
+//            dao.delete("name",new String[]{"张思宁===2"});
+
+//            //更改数据
+//            Person person = new Person("张三", 11);
+//            dao.update(person,"name","张思宁===0");
+
+            //查询支持类的使用
+            List<Person> list = dao.querySupport().selection("name").selectionArgs("张三").columns("name","age").query();
+            Log.i("查询结果：",list.toString());
+
         }
 
     }
