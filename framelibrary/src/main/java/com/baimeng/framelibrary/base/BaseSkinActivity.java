@@ -10,6 +10,7 @@ import android.support.v4.view.LayoutInflaterCompat;
 import android.support.v4.view.LayoutInflaterFactory;
 import android.support.v4.view.ViewCompat;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewParent;
@@ -21,6 +22,7 @@ import com.baimeng.framelibrary.skin.attr.SkinAttr;
 import com.baimeng.framelibrary.skin.attr.SkinView;
 import com.baimeng.framelibrary.skin.support.SkinAppCompatViewInflater;
 import com.baimeng.library.base.BaseActivity;
+import com.baimeng.library.utils.LogUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -66,7 +68,9 @@ public abstract class BaseSkinActivity extends BaseActivity implements LayoutInf
         // Log.e(TAG, view + "");
 
         // 2.1 一个activity的布局肯定对应多个这样的 SkinView
+        Log.i("view","++++++++++++++++++++++"+name);
         if(view != null) {
+            Log.i("view!=null","++++++++++++++++++++++"+name);
             List<SkinAttr> skinAttrs = SkinAttrSupport.getSkinAttrs(context, attrs);
             SkinView skinView = new SkinView(view,skinAttrs);
             // 3.统一交给SkinManager管理
@@ -82,7 +86,8 @@ public abstract class BaseSkinActivity extends BaseActivity implements LayoutInf
         List<SkinView> skinViews = SkinManager.getInstance().getSkinViews(this);
         if(skinViews == null){
             skinViews = new ArrayList<>();
-            SkinManager.getInstance().register(this,skinViews);
+            SkinManager.getInstance().register(this,skinViews)
+            ;
         }
         skinViews.add(skinView);
     }

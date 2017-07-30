@@ -35,15 +35,9 @@ public class SkinResources {
             //反射获取到addAssetPath方法
             Method addAssetMothod = AssetManager.class.getMethod("addAssetPath", String.class);
             //反射调用addAssetPath方法
-            File file = new File(Environment.getExternalStorageDirectory().getAbsolutePath()+File.separator+"blue.skin");
-            if(file.exists()){
-                Log.i("file.path===========",file.getAbsolutePath());
-            }
-            if(file.isFile()&&file.exists()){
-                addAssetMothod.invoke(am,file.getAbsolutePath() );
-                Log.i("00000000000000","skinPath==="+skinPath);
-                //获取皮肤apk的Resources
-                mSkinResource = new Resources(am,superRes.getDisplayMetrics(),superRes.getConfiguration());
+            addAssetMothod.invoke(am,skinPath );
+            //获取皮肤apk的Resources
+            mSkinResource = new Resources(am,superRes.getDisplayMetrics(),superRes.getConfiguration());
 //            //获取一个apk的包名
 //            mPackageName = context.getPackageManager()
 //                    .getPackageArchiveInfo(skinPath, PackageManager.GET_ACTIVITIES)
@@ -52,13 +46,12 @@ public class SkinResources {
 //            LogUtils.i("包名================="+mPackageName);
 
 
-                Log.i("context==null?","====================="+(context==null?true:false));
-                // 获取skinPath包名
-                mPackageName = context.getPackageManager().getPackageArchiveInfo(
-                        file.getAbsolutePath(), PackageManager.GET_ACTIVITIES).packageName;
+            Log.i("context==null?","====================="+(context==null?true:false));
+            // 获取skinPath包名
+            mPackageName = context.getPackageManager().getPackageArchiveInfo(
+                    skinPath, PackageManager.GET_ACTIVITIES).packageName;
 
-                Log.i("包名","====================="+mPackageName);
-            }
+            Log.i("包名","====================="+mPackageName);
 
 
         } catch (Exception e) {
@@ -92,9 +85,9 @@ public class SkinResources {
      */
     public ColorStateList getColorByName(String resName){
         try {
-            int resId = mSkinResource.getIdentifier(resName, "drawable", mPackageName);
+            int resId = mSkinResource.getIdentifier(resName, "color", mPackageName);
             LogUtils.i("colorid======="+resId);
-            Log.i("colorid=======",resId+"");
+            Log.i("resName=======",resName+"");
             ColorStateList color = mSkinResource.getColorStateList(resId);
             return color ;
         }catch (Exception e){
