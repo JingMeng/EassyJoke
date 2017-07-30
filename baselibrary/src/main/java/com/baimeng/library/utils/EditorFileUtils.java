@@ -78,22 +78,22 @@ public class EditorFileUtils {
     }
 
     public String getFilePathFromUri(Uri uri){
-        LogUtils.i("scheme--"+uri);
+        //LogUtils.i("scheme--"+uri);
         if (uri == null){
-            LogUtils.i("uri--null");
+            //LogUtils.i("uri--null");
             return null;
         }
         String scheme = uri.getScheme();
         String data = null;
         if (scheme == null){
-            LogUtils.i("scheme--null");
+           // LogUtils.i("scheme--null");
             data = uri.getPath();
         }else if(mContext.getContentResolver().SCHEME_FILE.equals(scheme)){
-            LogUtils.i("scheme--file");
+            //LogUtils.i("scheme--file");
             data = uri.getPath();
-            LogUtils.i("data---="+data);
+            //LogUtils.i("data---="+data);
         }else if(mContext.getContentResolver().SCHEME_CONTENT.equals(scheme)){
-            LogUtils.i("scheme--content");
+            //LogUtils.i("scheme--content");
             Cursor cursor = mContext.getContentResolver().query(uri,
                     new String[]{MediaStore.Images.ImageColumns.DATA}, null, null, null);
             if (cursor != null){
@@ -104,7 +104,7 @@ public class EditorFileUtils {
                     }
                 }
             }
-            LogUtils.i("data----"+data);
+            //LogUtils.i("data----"+data);
         }
         return data;
     }

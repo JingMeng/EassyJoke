@@ -2,7 +2,8 @@ package com.baimeng.library.utils;
 
 import android.util.Log;
 
-import com.sinieco.shougang.BuildConfig;
+import com.baimeng.library.BuildConfig;
+
 
 /**
  * Created by BaiMeng on 2017/1/12.
@@ -11,10 +12,11 @@ public class LogUtils {
     static String className;
     static String methodName;
     static int lineNumber;
-    private LogUtils (){
+    private LogUtils(){
     }
     public static boolean isDebuggable(){
         return BuildConfig.DEBUG;
+//        return true ;
     }
     private static String createLog(String log){
         StringBuffer buffer = new StringBuffer();

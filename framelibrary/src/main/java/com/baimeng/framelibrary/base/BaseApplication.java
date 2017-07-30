@@ -4,6 +4,7 @@ import android.app.Application;
 
 import com.alipay.euler.andfix.patch.PatchManager;
 import com.baimeng.framelibrary.db.http.OkHttpEngine;
+import com.baimeng.framelibrary.skin.SkinManager;
 import com.baimeng.library.http.HttpUtils;
 
 /**
@@ -17,6 +18,8 @@ public class BaseApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        //初始化SkinManager
+        SkinManager.getInstance().init(this);
         //程序入口设置系统全局异常捕捉类
         ExceptionCrashHandler.getInstance().init(this);
 

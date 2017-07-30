@@ -1,45 +1,38 @@
 package com.baimeng.eassyjoke;
 
 import android.Manifest;
+import android.content.Context;
 import android.os.Environment;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.baimeng.eassyjoke.bean.AMainIndicatorShowDto;
-import com.baimeng.eassyjoke.bean.AResponse;
 import com.baimeng.framelibrary.base.BaseApplication;
 import com.baimeng.framelibrary.base.BaseSkinActivity;
 import com.baimeng.framelibrary.base.DefaultNavigationBar;
-import com.baimeng.framelibrary.base.ExceptionCrashHandler;
-import com.baimeng.framelibrary.base.HttpCallBack;
-import com.baimeng.framelibrary.db.DaoSupportFactory;
-import com.baimeng.framelibrary.db.IDaoSupport;
+import com.baimeng.framelibrary.skin.SkinManager;
 import com.baimeng.library.dialog.AlertDialog;
 import com.baimeng.library.fixbug.FixDexManager;
-import com.baimeng.library.http.HttpUtils;
 import com.baimeng.library.ioc.CheckNet;
 import com.baimeng.library.ioc.OnClick;
 import com.baimeng.library.ioc.ViewById;
+import com.baimeng.library.utils.LogUtils;
 import com.baimeng.library.utils.XPermissionUtils;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class MainActivity extends BaseSkinActivity {
     @ViewById(R.id.sample_text)
-    private TextView tv;
+    private Button tv;
     @ViewById(R.id.parent)
     private LinearLayout mParent ;
 
+    int i = 0 ;
     @Override
     protected void initData() {
         tv.setText("口活的活好");
@@ -63,21 +56,21 @@ public class MainActivity extends BaseSkinActivity {
         });
 
         //获取上次崩溃文件上传至服务器
-        File crashFile = ExceptionCrashHandler.getInstance().getCrashFile();
-        if(crashFile.exists()){
-            //上传至服务器
-            try {
-                InputStreamReader fileReader = new InputStreamReader(new FileInputStream(crashFile));
-                char[] chars = new char[1024];
-                int len = 0 ;
-                while ((len = fileReader.read(chars))!= -1){
-                    String str = new String(chars,0,len);
-                    Log.e("TAG",str) ;
-                }
-            }catch (Exception e){
-
-            }
-        }
+//        File crashFile = ExceptionCrashHandler.getInstance().getCrashFile();
+//        if(crashFile.exists()){
+//            //上传至服务器
+//            try {
+//                InputStreamReader fileReader = new InputStreamReader(new FileInputStream(crashFile));
+//                char[] chars = new char[1024];
+//                int len = 0 ;
+//                while ((len = fileReader.read(chars))!= -1){
+//                    String str = new String(chars,0,len);
+//                    Log.e("TAG",str) ;
+//                }
+//            }catch (Exception e){
+//
+//            }
+//        }
 
 //        AsyncTask <Void,String,Void> task = new AsyncTask<Void,String ,Void>(){
 //            @Override
@@ -155,19 +148,21 @@ public class MainActivity extends BaseSkinActivity {
 //                    }
 //                });
 
-        HttpUtils.with(this).isCache(true).get().url("http://v.juhe.cn/WNXG/city")
-                .addParams(params)
-                .execute(new HttpCallBack<String>() {
-                    @Override
-                    public void onSuccess(String result) {
-                        Log.i("成功",result);
-                    }
+//        HttpUtils.with(this).isCache(true).get().url("http://v.juhe.cn/WNXG/city")
+//                .addParams(params)
+//                .execute(new HttpCallBack<String>() {
+//                    @Override
+//                    public void onSuccess(String result) {
+//                        Log.i("成功",result);
+//                    }
+//
+//                    @Override
+//                    public void onError(Exception e) {
+//                        Log.i("失败",e.toString());
+//                    }
+//                });
 
-                    @Override
-                    public void onError(Exception e) {
-                        Log.i("失败",e.toString());
-                    }
-                });
+
 //                .execute(new HttpCallBack<AResponse<List<AMainIndicatorShowDto>>>() {
 //                    @Override
 //                    public void onError(Exception e) {
@@ -205,15 +200,19 @@ public class MainActivity extends BaseSkinActivity {
     @CheckNet
     private void onClick(View view){
         if (view.getId()==R.id.sample_text){
-            Log.e("=======","text点击");
+            LogUtils.e("text点击");
             showDialog();
         }else if(view.getId() == R.id.iv_img){
 //            Toast.makeText(this, "测试："+ (2/0), Toast.LENGTH_SHORT).show();
             Log.e("=======","img点击");
-            showDialog();
+            Log.e("什麽貴？","新皮膚");
+            String skinPath = Environment.getExternalStorageDirectory().getAbsolutePath()+File.separator+"blue.skin";
+            int result = SkinManager.getInstance().loadSkin(skinPath);
+           // changeSkin();
+          //  showDialog();
 
             //测试数据库框架
-            IDaoSupport<Person> dao = DaoSupportFactory.getFactory().getDao(Person.class);
+          //  IDaoSupport<Person> dao = DaoSupportFactory.getFactory().getDao(Person.class);
             //插入测试
 //            List<Person> persons = new ArrayList<>();
 //            for (int i = 0 ; i < 5000 ; i++){
@@ -237,12 +236,58 @@ public class MainActivity extends BaseSkinActivity {
 //            dao.update(person,"name","张思宁===0");
 
             //查询支持类的使用
-            List<Person> list = dao.querySupport().selection("name").selectionArgs("张三").columns("name","age").query();
-            Log.i("查询结果：",list.toString());
+//            List<Person> list = dao.querySupport().selection("name").selectionArgs("张三").columns("name","age").query();
+//            Log.i("查询结果：",list.toString());
+
+            //换肤
 
         }
 
     }
+
+    private void changeSkin() {
+        LogUtils.e("什麽鬼？");
+        LogUtils.i("i==="+i+"====i%2======"+i%2);
+//        i++ ;
+//        if(i%2 == 0){
+//            //默认皮肤
+//            LogUtils.i("默認皮膚");
+//            int result = SkinManager.getInstance().restoreDefault();
+//
+//        }else if(i%2 == 1){
+            LogUtils.i("新皮膚");
+            String skinPath = Environment.getExternalStorageDirectory().getAbsolutePath()+File.separator+"blue.skin";
+            int result = SkinManager.getInstance().loadSkin(skinPath);
+//        }
+
+    }
+
+    /**
+     * 换肤基础
+     */
+//    private void changeSkin() {
+//        try {
+//            //获取当前app的Resources
+//            Resources superRes = getResources() ;
+//            //通过反射获取到AssetManager实例
+//            AssetManager am = AssetManager.class.newInstance();
+//            //反射获取到addAssetPath方法
+//            Method addAssetMothod = AssetManager.class.getMethod("addAssetPath", String.class);
+//            //反射调用addAssetPath方法
+//            addAssetMothod.invoke(am,Environment.getExternalStorageDirectory().getAbsolutePath()+
+//                    File.separator+"other.skin");
+//            //获取皮肤apk的Resources
+//            Resources resources = new Resources(am,superRes.getDisplayMetrics(),superRes.getConfiguration());
+//            //获取图片资源的id
+//            int drawableId = resources.getIdentifier("image_src", "drawable", "com.baimeng.myapplication");
+//            //获取图片的Drawable
+//            Drawable drawable = resources.getDrawable(drawableId);
+//            //设置图片
+//            mSkin.setImageDrawable(drawable);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//    }
 
     private void showDialog() {
         new AlertDialog.Builder(this)
@@ -258,6 +303,7 @@ public class MainActivity extends BaseSkinActivity {
                 .fromBottom(true)
                 .fullWidth()
                 .show();
+        Context context = getApplicationContext();
 
     }
 }

@@ -9,10 +9,11 @@
     android:orientation="vertical"
     tools:context="com.baimeng.eassyjoke.MainActivity">
 
-    <TextView
+    <Button
         android:id="@+id/sample_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:textColor="@color/bt_bg"
         android:text="Hello World!" />
 
     <ImageView
@@ -20,5 +21,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@mipmap/ic_launcher"/>
+    <ImageView
+        android:id="@+id/skin"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/image_src"/>
 
 </LinearLayout>

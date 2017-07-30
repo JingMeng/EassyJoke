@@ -9,7 +9,6 @@ public class CommonUtils {
         long time = System.currentTimeMillis();
         long timeD = time - lastClickTime;
         if ( 0 < timeD && timeD < 1200) {
-            LogUtils.i("1  "+timeD);
             return true;
 
         }
