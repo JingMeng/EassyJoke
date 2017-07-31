@@ -2,11 +2,15 @@ package com.baimeng.framelibrary.skin;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.pm.PackageManager;
+import android.text.TextUtils;
 
 import com.baimeng.framelibrary.base.BaseSkinActivity;
 import com.baimeng.framelibrary.skin.attr.SkinView;
+import com.baimeng.framelibrary.skin.config.SkinPreUtils;
 import com.baimeng.library.utils.LogUtils;
 
+import java.io.File;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -35,6 +39,27 @@ public class SkinManager {
 
     public void init(Context context){
         this.mContext = context.getApplicationContext();
+        // 每一次打开应用都会到这里来，防止皮肤被任意删除，做一些措施
+        String skinPath = SkinPreUtils.getInstance(mContext).getSkinPath();
+        File file = new File(skinPath);
+        if(!file.exists()){
+            // 不存在，清空皮肤
+            SkinPreUtils.getInstance(mContext).clearSkinPath();
+            return;
+        }
+        // 最好做一下  能不能获取到包名
+        String packageName = mContext.getPackageManager()
+                .getPackageArchiveInfo(skinPath, PackageManager.GET_ACTIVITIES).packageName;
+        if(TextUtils.isEmpty(packageName)){
+            SkinPreUtils.getInstance(mContext).clearSkinPath();
+            return;
+        }
+
+        // 最好校验签名  增量更新再说
+
+
+        // 做一些初始化的工作,
+        mSkinResource = new SkinResources(mContext,skinPath);
     }
 
     public int loadSkin(String skinPath) {
@@ -76,5 +101,12 @@ public class SkinManager {
 
     public SkinResources getSkinResource(){
         return mSkinResource ;
+    }
+
+    public void checkChangeSkin(SkinView skinView) {
+        String currentSkinPath = SkinPreUtils.getInstance(mContext).getSkinPath();
+        if(!TextUtils.isEmpty(currentSkinPath)){
+            skinView.skin();
+        }
     }
 }

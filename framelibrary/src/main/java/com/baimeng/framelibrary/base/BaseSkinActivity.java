@@ -75,6 +75,8 @@ public abstract class BaseSkinActivity extends BaseActivity implements LayoutInf
             SkinView skinView = new SkinView(view,skinAttrs);
             // 3.统一交给SkinManager管理
             managerSkinView(skinView);
+            //检查是否需要换肤
+            SkinManager.getInstance().checkChangeSkin(skinView);
         }
         return view;
     }
@@ -86,8 +88,7 @@ public abstract class BaseSkinActivity extends BaseActivity implements LayoutInf
         List<SkinView> skinViews = SkinManager.getInstance().getSkinViews(this);
         if(skinViews == null){
             skinViews = new ArrayList<>();
-            SkinManager.getInstance().register(this,skinViews)
-            ;
+            SkinManager.getInstance().register(this,skinViews);
         }
         skinViews.add(skinView);
     }
