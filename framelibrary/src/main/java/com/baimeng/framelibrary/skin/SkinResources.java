@@ -66,10 +66,7 @@ public class SkinResources {
      */
     public Drawable getDrawableByName(String resName){
         try {
-            Log.i("resName","  ========"+resName) ;
             int resId = mSkinResource.getIdentifier(resName, "drawable", mPackageName);
-            Log.i("TAG========",resId+"");
-            Log.i("TAG========",resName+"");
             Drawable drawable = mSkinResource.getDrawable(resId);
             return drawable ;
         }catch (Exception e){

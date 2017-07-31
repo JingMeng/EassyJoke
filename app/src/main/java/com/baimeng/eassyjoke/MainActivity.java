@@ -13,6 +13,7 @@ import com.baimeng.framelibrary.base.BaseApplication;
 import com.baimeng.framelibrary.base.BaseSkinActivity;
 import com.baimeng.framelibrary.base.DefaultNavigationBar;
 import com.baimeng.framelibrary.skin.SkinManager;
+import com.baimeng.framelibrary.skin.SkinResources;
 import com.baimeng.library.dialog.AlertDialog;
 import com.baimeng.library.fixbug.FixDexManager;
 import com.baimeng.library.ioc.CheckNet;
@@ -182,6 +183,12 @@ public class MainActivity extends BaseSkinActivity {
                 .setLeftText("返回")
                 .setTitle("投稿")
                 .setRightText("发布")
+                .setRightClick(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        startActivity(MainActivity.class);
+                    }
+                })
                 .setLeftClick(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -202,6 +209,8 @@ public class MainActivity extends BaseSkinActivity {
         if (view.getId()==R.id.sample_text){
             LogUtils.e("text点击");
             showDialog();
+            //恢复默认皮肤
+            SkinManager.getInstance().restoreDefault();
         }else if(view.getId() == R.id.iv_img){
 //            Toast.makeText(this, "测试："+ (2/0), Toast.LENGTH_SHORT).show();
             Log.e("=======","img点击");
@@ -305,5 +314,11 @@ public class MainActivity extends BaseSkinActivity {
                 .show();
         Context context = getApplicationContext();
 
+    }
+
+    @Override
+    public void changeSkin(SkinResources skinResources) {
+        // 改变皮肤监听
+        //控制自定义控件护肤
     }
 }

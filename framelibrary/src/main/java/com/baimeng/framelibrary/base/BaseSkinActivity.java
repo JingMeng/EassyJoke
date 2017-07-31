@@ -20,6 +20,7 @@ import com.baimeng.framelibrary.skin.SkinAttrSupport;
 import com.baimeng.framelibrary.skin.SkinManager;
 import com.baimeng.framelibrary.skin.attr.SkinAttr;
 import com.baimeng.framelibrary.skin.attr.SkinView;
+import com.baimeng.framelibrary.skin.callback.ISkinChangeListener;
 import com.baimeng.framelibrary.skin.support.SkinAppCompatViewInflater;
 import com.baimeng.library.base.BaseActivity;
 import com.baimeng.library.utils.LogUtils;
@@ -33,7 +34,7 @@ import java.util.List;
  * Version 1.0
  * Description:
  */
-public abstract class BaseSkinActivity extends BaseActivity implements LayoutInflaterFactory {
+public abstract class BaseSkinActivity extends BaseActivity implements LayoutInflaterFactory , ISkinChangeListener {
     // 后面会写插件换肤 预留的东西
     private SkinAppCompatViewInflater mAppCompatViewInflater;
 

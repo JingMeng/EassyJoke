@@ -1,6 +1,7 @@
 package com.baimeng.framelibrary.base;
 
 import android.app.Application;
+import android.util.Log;
 
 import com.alipay.euler.andfix.patch.PatchManager;
 import com.baimeng.framelibrary.db.http.OkHttpEngine;
