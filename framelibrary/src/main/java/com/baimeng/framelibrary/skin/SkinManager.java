@@ -157,4 +157,8 @@ public class SkinManager {
             skinView.skin();
         }
     }
+
+    public void unRegister(ISkinChangeListener listener) {
+        mSkinViews.remove(listener);
+    }
 }

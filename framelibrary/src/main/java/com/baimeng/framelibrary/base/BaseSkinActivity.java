@@ -21,6 +21,7 @@ import com.baimeng.framelibrary.skin.SkinManager;
 import com.baimeng.framelibrary.skin.attr.SkinAttr;
 import com.baimeng.framelibrary.skin.attr.SkinView;
 import com.baimeng.framelibrary.skin.callback.ISkinChangeListener;
+import com.baimeng.framelibrary.skin.config.SkinPreUtils;
 import com.baimeng.framelibrary.skin.support.SkinAppCompatViewInflater;
 import com.baimeng.library.base.BaseActivity;
 import com.baimeng.library.utils.LogUtils;
@@ -135,5 +136,11 @@ public abstract class BaseSkinActivity extends BaseActivity implements LayoutInf
             }
             parent = parent.getParent();
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        SkinManager.getInstance().unRegister(this);
+        super.onDestroy();
     }
 }
