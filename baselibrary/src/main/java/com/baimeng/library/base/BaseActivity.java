@@ -31,12 +31,12 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     protected abstract void setContentView();
 
-    protected <T extends View> T viewById(int id){
-        return (T)findViewById(id);
+    protected <T extends View> T viewById(int id) {
+        return (T) findViewById(id);
     }
 
-    public void  startActivity(Class<?> clazz){
-        Intent intent = new Intent(this,clazz);
+    public void startActivity(Class<?> clazz) {
+        Intent intent = new Intent(this, clazz);
         startActivity(intent);
     }
 }

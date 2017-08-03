@@ -77,11 +77,12 @@ public class ClipPicture {
 
     /**
      * 截图图片
-     * @param src 原始的图片的bitmap
-     * @param left 截取图片的左起始点
-     * @param top  截取图片的右起始点
+     *
+     * @param src        原始的图片的bitmap
+     * @param left       截取图片的左起始点
+     * @param top        截取图片的右起始点
      * @param widthSize  截取图片的宽
-     * @param heightSize  截取图片的高
+     * @param heightSize 截取图片的高
      * @return
      */
     public Bitmap clipBitmap(Bitmap src, int left, int top, int widthSize, int heightSize) {
@@ -99,14 +100,14 @@ public class ClipPicture {
         top = top < 0 ? 0 : top;
 
         //在原图上截取的区域
-        Rect srcRect = new Rect(left,top,
-                left+widthSize>src.getWidth()?src.getWidth():(left+widthSize),
-                top+heightSize>src.getHeight()?src.getHeight() : (top + heightSize)
+        Rect srcRect = new Rect(left, top,
+                left + widthSize > src.getWidth() ? src.getWidth() : (left + widthSize),
+                top + heightSize > src.getHeight() ? src.getHeight() : (top + heightSize)
         );
 
-        Rect desRect = new Rect(0,0,widthSize,heightSize);
+        Rect desRect = new Rect(0, 0, widthSize, heightSize);
 
-        cavas.drawBitmap(src,srcRect,desRect,null);
+        cavas.drawBitmap(src, srcRect, desRect, null);
         cavas.save(Canvas.ALL_SAVE_FLAG);
         cavas.restore();
 
@@ -116,16 +117,18 @@ public class ClipPicture {
 
     /**
      * 截按照指定的矩形区域来截取图片
+     *
      * @param src
      * @param rect
      * @return
      */
-    public Bitmap clipBitmp(Bitmap src, Rect rect){
-        return clipBitmap(src,rect.left,rect.top,rect.right-rect.left,rect.bottom-rect.top);
+    public Bitmap clipBitmp(Bitmap src, Rect rect) {
+        return clipBitmap(src, rect.left, rect.top, rect.right - rect.left, rect.bottom - rect.top);
     }
 
     /**
      * 测试用例
+     *
      * @param src
      * @return
      */
@@ -156,7 +159,7 @@ public class ClipPicture {
 //        cv.restore();
 
 //        return newb;
-        return clipBitmap(src,src.getWidth()/4,src.getHeight()/4,src.getWidth()/2,src.getHeight()/2);
+        return clipBitmap(src, src.getWidth() / 4, src.getHeight() / 4, src.getWidth() / 2, src.getHeight() / 2);
 
     }
 

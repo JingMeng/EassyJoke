@@ -44,15 +44,13 @@ public class SkinManager {
         this.mContext = context.getApplicationContext();
         // 每一次打开应用都会到这里来，防止皮肤被任意删除，做一些措施
         String skinPath = SkinPreUtils.getInstance(mContext).getSkinPath();
-        Log.e("SkinManager======"," =================init"+skinPath);
-
         File file = new File(skinPath);
         if(!file.exists()){
-            // 不存在，清空皮肤
+            // 皮肤apk不存在，清空皮肤
             SkinPreUtils.getInstance(mContext).clearSkinPath();
             return;
         }
-        // 最好做一下  能不能获取到包名
+        // 最好做一下  能不能获取到包名，检查是否是个正确的皮肤apk
         String packageName = mContext.getPackageManager()
                 .getPackageArchiveInfo(skinPath, PackageManager.GET_ACTIVITIES).packageName;
         if(TextUtils.isEmpty(packageName)){
@@ -95,8 +93,10 @@ public class SkinManager {
         //初始化资源管理
         mSkinResource = new SkinResources(mContext ,skinPath);
 
+        //换肤
         changeSkin();
 
+        //保存新的皮肤路径
         saveSkinStatus(skinPath);
 
         return SkinConfig.SKIN_CHANGE_SUCCESS;
@@ -108,12 +108,11 @@ public class SkinManager {
 
     private void changeSkin() {
         //改变皮肤
-        //遍历集合
+        //遍历集合（包括说有需要换肤的view）
         Set<ISkinChangeListener> keys = mSkinViews.keySet();
         for (ISkinChangeListener key : keys) {
             List<SkinView> skinViews = mSkinViews.get(key);
             for (SkinView skinView : skinViews) {
-                LogUtils.i("SkinView"+skinView.toString());
                 skinView.skin();
             }
             key.changeSkin(mSkinResource);

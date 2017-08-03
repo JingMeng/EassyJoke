@@ -5,8 +5,8 @@ package com.baimeng.library.utils;
  */
 public class MathUtils {
     //保留小数点后两位
-    public static String getTwo(double i){
-        java.text.DecimalFormat   df=new   java.text.DecimalFormat("#.##");
+    public static String getTwo(double i) {
+        java.text.DecimalFormat df = new java.text.DecimalFormat("#.##");
         return df.format(i);
     }
 }

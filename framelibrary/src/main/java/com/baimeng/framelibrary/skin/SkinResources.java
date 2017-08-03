@@ -38,22 +38,9 @@ public class SkinResources {
             addAssetMothod.invoke(am,skinPath );
             //获取皮肤apk的Resources
             mSkinResource = new Resources(am,superRes.getDisplayMetrics(),superRes.getConfiguration());
-//            //获取一个apk的包名
-//            mPackageName = context.getPackageManager()
-//                    .getPackageArchiveInfo(skinPath, PackageManager.GET_ACTIVITIES)
-//                    .packageName;
-//
-//            LogUtils.i("包名================="+mPackageName);
-
-
-            Log.i("context==null?","====================="+(context==null?true:false));
             // 获取skinPath包名
             mPackageName = context.getPackageManager().getPackageArchiveInfo(
                     skinPath, PackageManager.GET_ACTIVITIES).packageName;
-
-            Log.i("包名","====================="+mPackageName);
-
-
         } catch (Exception e) {
             e.printStackTrace();
         }

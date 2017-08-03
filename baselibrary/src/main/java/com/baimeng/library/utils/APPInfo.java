@@ -10,6 +10,7 @@ import android.content.pm.PackageManager;
 public class APPInfo {
     /**
      * 获取软件版本号
+     *
      * @return
      */
        /*

@@ -18,9 +18,9 @@ public class Base64Utils {
     // 加密
     public static String getBase64(String str) {
         String result = "";
-        if( str != null) {
+        if (str != null) {
             try {
-                result = new String(Base64.encode(str.getBytes("utf-8"), Base64.NO_WRAP),"utf-8");
+                result = new String(Base64.encode(str.getBytes("utf-8"), Base64.NO_WRAP), "utf-8");
             } catch (UnsupportedEncodingException e) {
                 e.printStackTrace();
             }
@@ -40,6 +40,7 @@ public class Base64Utils {
         }
         return result;
     }
+
     public static String bitmapEncode(String path) {
         //decode to bitmap
         Bitmap bitmap = BitmapFactory.decodeFile(path);
@@ -73,6 +74,7 @@ public class Base64Utils {
         return result;
 
     }
+
     public static void bitmapDecode(String encode) {
         byte[] decode = Base64.decode(encode, Base64.DEFAULT);
         Bitmap bitmap = BitmapFactory.decodeByteArray(decode, 0, decode.length);
@@ -83,15 +85,15 @@ public class Base64Utils {
     private static void saveBitmap(Bitmap bitmap) {
         try {
             String path = Environment.getExternalStorageDirectory().getPath()
-                    +"/decodeImage.jpg";
+                    + "/decodeImage.jpg";
 //            Log.d("linc","path is "+path);
             OutputStream stream = new FileOutputStream(path);
             bitmap.compress(Bitmap.CompressFormat.JPEG, 90, stream);
             stream.close();
-   //         Log.e("linc","jpg okay!");
+            //         Log.e("linc","jpg okay!");
         } catch (IOException e) {
             e.printStackTrace();
-         //   Log.e("linc","failed: "+e.getMessage());
+            //   Log.e("linc","failed: "+e.getMessage());
         }
     }
 }

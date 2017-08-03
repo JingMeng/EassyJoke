@@ -21,7 +21,6 @@ public enum  SkinType {
     TEXT_COLOR ("textColor") {
         @Override
         public void skin(View view, String resName) {
-            Log.i("color","去获取Color             "+"color");
             SkinResources skinResource = getSkinResource();
             ColorStateList color = skinResource.getColorByName(resName);
             if (color == null) return;
@@ -31,7 +30,6 @@ public enum  SkinType {
     }, BACKGROUND("background") {
         @Override
         public void skin(View view, String resName) {
-            Log.i("background","去获取Drawable             "+"background");
             SkinResources skinResource = getSkinResource();
             Drawable drawable = skinResource.getDrawableByName(resName);
             if (drawable != null) {
@@ -49,7 +47,6 @@ public enum  SkinType {
     }, SRC("src") {
         @Override
         public void skin(View view, String resName) {
-            Log.i("TAG","去获取Drawable             "+"src");
             SkinResources skinResource = getSkinResource();
             Drawable drawable = skinResource.getDrawableByName(resName);
             if (drawable != null) {

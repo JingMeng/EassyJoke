@@ -30,7 +30,7 @@ public class XPermissionUtils {
     public static void requestPermissions(Context context, int requestCode
             , String[] permissions, OnPermissionListener listener) {
 
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (context instanceof Activity) {
                 mOnPermissionListener = listener;
                 List<String> deniedPermissions = getDeniedPermissions(context, permissions);
@@ -46,12 +46,12 @@ public class XPermissionUtils {
             } else {
                 throw new RuntimeException("Context must be an Activity");
             }
-        }else {
+        } else {
             if (mOnPermissionListener != null)
                 mOnPermissionListener.onPermissionGranted();
         }
 
-        }
+    }
 
     /**
      * 获取请求权限中需要授权的权限

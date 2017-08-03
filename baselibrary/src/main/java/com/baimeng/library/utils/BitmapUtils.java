@@ -146,6 +146,7 @@ public class BitmapUtils {
             file.delete();
         }
     }
+
     //根据urlh获取bitmap
     public static Bitmap getbitmap(String imageUri) {
         // 显示网络上的图片

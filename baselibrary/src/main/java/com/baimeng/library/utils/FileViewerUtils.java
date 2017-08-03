@@ -13,9 +13,10 @@ import java.io.File;
 public class FileViewerUtils {
     private final Context context;
 
-    public FileViewerUtils(Context context){
+    public FileViewerUtils(Context context) {
         this.context = context;
     }
+
     //打开文件时调用
     public void openFiles(String filesPath) {
         Uri uri = Uri.parse("file://" + filesPath);
@@ -37,7 +38,7 @@ public class FileViewerUtils {
     }
 
     //显示打开方式
-    public void show(String filesPath){
+    public void show(String filesPath) {
         Intent intent = new Intent();
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.setAction(Intent.ACTION_VIEW);

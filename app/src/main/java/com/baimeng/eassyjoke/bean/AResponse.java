@@ -4,26 +4,27 @@ import java.io.Serializable;
 
 /**
  * web端向pda端响应时的对象（需要经过gson处理后返回给请求段）
- * @author liwenhao
- * 2016-12-19 上午11:29:17
+ *
  * @param <T>
+ * @author liwenhao
+ *         2016-12-19 上午11:29:17
  */
 public class AResponse<T> implements Serializable {
 
     private static final long serialVersionUID = -7816945325851639128L;
-    
+
     public boolean success;
-    
+
     public String message;
-    
+
     public T data;
-    
+
     public long total = 0;
-    
+
     public AResponse() {
         this(true, "", null);
     }
-    
+
     public AResponse(boolean success, String message, T data) {
         this.success = success;
         this.message = message;

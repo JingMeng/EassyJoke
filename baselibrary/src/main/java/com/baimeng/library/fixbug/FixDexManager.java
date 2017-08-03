@@ -21,18 +21,19 @@ import dalvik.system.BaseDexClassLoader;
  */
 
 public class FixDexManager {
-    private Context mContext ;
+    private Context mContext;
 
-    private File mDexFix ;
+    private File mDexFix;
 
     public FixDexManager(Context context) {
-        this.mContext = context ;
+        this.mContext = context;
         //获取应用可以访问的dex目录
-        this.mDexFix = context.getDir("odex",Context.MODE_PRIVATE);
+        this.mDexFix = context.getDir("odex", Context.MODE_PRIVATE);
     }
 
     /**
      * 修复dex包
+     *
      * @param path
      */
     public void fixDex(String path) throws Exception {
@@ -44,24 +45,24 @@ public class FixDexManager {
 
         //2.1移动到系统能够访问的 dex目录下  ClassLoader
         File srcFile = new File(path);
-        if(!srcFile.exists()){
+        if (!srcFile.exists()) {
             throw new FileNotFoundException(path);
         }
 
         File destFile = new File(mDexFix, srcFile.getName());
-        if (destFile.exists()){
-            Log.i("srcFile已经存在","++++++++++++++++++++++++++="+srcFile.getName());
+        if (destFile.exists()) {
+            Log.i("srcFile已经存在", "++++++++++++++++++++++++++=" + srcFile.getName());
             return;
         }
 
-        copyFile(srcFile,destFile);
+        copyFile(srcFile, destFile);
 
         //2.2 ClassLoader读取fixDex路径
         List<File> fixDexFiles = new ArrayList<>();
         fixDexFiles.add(destFile);
 
-        File optimizedDirectory = new File(mDexFix,"odex");
-        if(!optimizedDirectory.exists()){
+        File optimizedDirectory = new File(mDexFix, "odex");
+        if (!optimizedDirectory.exists()) {
             optimizedDirectory.mkdirs();
         }
 
@@ -72,7 +73,7 @@ public class FixDexManager {
             //optimizedDirectory 解压路径
             //libraryPath .so文件位置
             //parent 父ClassLoader
-            ClassLoader fixDexClassLoader =  new BaseDexClassLoader(
+            ClassLoader fixDexClassLoader = new BaseDexClassLoader(
                     fixDexFile.getAbsolutePath(),
                     optimizedDirectory,
                     null,
@@ -80,12 +81,12 @@ public class FixDexManager {
             Object fixDexElements = getDexElementByClassLoader(fixDexClassLoader);
             //3.把补丁的dexElement插到运行的dexElement前面
             //合并classLoader数组和fixDexElement数组
-            Log.e("走到这了吗？","合并之前");
+            Log.e("走到这了吗？", "合并之前");
             applictionDexElement = combineArray(fixDexElements, applictionDexElement);
         }
 
         //把合并的数组注入到原来的applicationClassLoader中
-        injectDexElement(classLoader,applictionDexElement);
+        injectDexElement(classLoader, applictionDexElement);
 
     }
 
@@ -101,7 +102,7 @@ public class FixDexManager {
 
         Field dexElementField = pathList.getClass().getDeclaredField("dexElements");
         dexElementField.setAccessible(true);
-        dexElementField.set(pathList,dexElement);
+        dexElementField.set(pathList, dexElement);
     }
 
 
@@ -118,7 +119,7 @@ public class FixDexManager {
 
         Field dexElementField = pathList.getClass().getDeclaredField("dexElements");
         dexElementField.setAccessible(true);
-        return dexElementField.get(pathList) ;
+        return dexElementField.get(pathList);
     }
 
     //拷贝文件
@@ -140,25 +141,25 @@ public class FixDexManager {
                 outChannel.close();
             }
         }
-        Log.e("走这了吗？","++++++++++++++++++拷贝文件");
+        Log.e("走这了吗？", "++++++++++++++++++拷贝文件");
     }
     //合并数组
 
-    private static Object combineArray(Object arrayLhs , Object arrayRhs){
+    private static Object combineArray(Object arrayLhs, Object arrayRhs) {
         Class<?> localClass = arrayLhs.getClass().getComponentType();
         int i = Array.getLength(arrayLhs);
         int j = i + Array.getLength(arrayRhs);
         Object result = Array.newInstance(localClass, j);
-        for (int k = 0 ; k < j ; ++ k){
-            if (k<i){
-                Array.set(result,k,Array.get(arrayLhs,k));
-                Log.e("打印元素",Array.get(arrayLhs,k).toString());
-            }else {
-                Array.set(result,k,Array.get(arrayRhs,k-1));
-                Log.e("打印元素",Array.get(arrayRhs,k-1).toString());
+        for (int k = 0; k < j; ++k) {
+            if (k < i) {
+                Array.set(result, k, Array.get(arrayLhs, k));
+                Log.e("打印元素", Array.get(arrayLhs, k).toString());
+            } else {
+                Array.set(result, k, Array.get(arrayRhs, k - 1));
+                Log.e("打印元素", Array.get(arrayRhs, k - 1).toString());
             }
         }
-        return result ;
+        return result;
     }
 
 //    public void loadFixDex() {

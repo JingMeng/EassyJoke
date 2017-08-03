@@ -17,70 +17,71 @@ import java.util.Comparator;
  * 头部的基类
  */
 
-public abstract class  AbsNavigationBar <P extends AbsNavigationBar.Builder.AbsNavigationParams> implements INavigationBar {
+public abstract class AbsNavigationBar<P extends AbsNavigationBar.Builder.AbsNavigationParams> implements INavigationBar {
 
-    private P mParams ;
+    private P mParams;
 
-    private View mNavigationView ;
+    private View mNavigationView;
 
     public AbsNavigationBar(P params) {
         this.mParams = params;
         createAndBindView();
     }
 
-    public P getParams (){
-        return mParams ;
+    public P getParams() {
+        return mParams;
     }
 
-    protected void setText (int viewId , String text){
+    protected void setText(int viewId, String text) {
         TextView tv = findViewById(viewId);
-        if(!TextUtils.isEmpty(text)){
+        if (!TextUtils.isEmpty(text)) {
             tv.setVisibility(View.VISIBLE);
             tv.setText(text);
         }
     }
 
-    protected void setOnClickListener(int viewId , View.OnClickListener listener){
+    protected void setOnClickListener(int viewId, View.OnClickListener listener) {
         findViewById(viewId).setOnClickListener(listener);
     }
 
-    public <T extends View> T findViewById(int viewId){
-        return (T)mNavigationView.findViewById(viewId) ;
+    public <T extends View> T findViewById(int viewId) {
+        return (T) mNavigationView.findViewById(viewId);
     }
 
     //创建并绑定View
     private void createAndBindView() {
-        if(mParams.mParent == null){
-            ViewGroup activityRootView = (ViewGroup)((Activity) mParams.mContext)
+        if (mParams.mParent == null) {
+            ViewGroup activityRootView = (ViewGroup) ((Activity) mParams.mContext)
                     .findViewById(android.R.id.content);
             mParams.mParent = (ViewGroup) activityRootView.getChildAt(0);
         }
-        if(mParams.mParent == null){
+        if (mParams.mParent == null) {
             return;
         }
         mNavigationView = LayoutInflater.from(mParams.mContext)
-                .inflate(bindLayoutId(), mParams.mParent,false);
+                .inflate(bindLayoutId(), mParams.mParent, false);
         //将头部添加到索引为0的位置
-        mParams.mParent.addView(mNavigationView,0);
+        mParams.mParent.addView(mNavigationView, 0);
         applyView();
     }
 
 
     public abstract static class Builder {
-//        AbsNavigationParams P ;
-        public Builder(Context context , ViewGroup parent){
+        //        AbsNavigationParams P ;
+        public Builder(Context context, ViewGroup parent) {
             //创建参数对象
 //            P = new AbsNavigationParams(context ,parent ) ;
         }
 
         public abstract AbsNavigationBar build();
 
-        public static class AbsNavigationParams{
-            public Context mContext ;
-            public ViewGroup mParent ;
-            public AbsNavigationParams(Context context , ViewGroup parent){
-                this.mContext = context ;
-                this.mParent = parent ;
+        public static class AbsNavigationParams {
+            public Context mContext;
+            public ViewGroup mParent;
+
+            public AbsNavigationParams(Context context, ViewGroup parent) {
+                this.mContext = context;
+                this.mParent = parent;
             }
         }
     }

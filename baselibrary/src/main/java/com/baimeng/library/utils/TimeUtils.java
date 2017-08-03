@@ -10,61 +10,68 @@ import java.util.Date;
  */
 public class TimeUtils {
 
-    public static String formatTimeNoSecond(long time){
+    public static String formatTimeNoSecond(long time) {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
         Date data = new Date(time);
         return format.format(data);
     }
 
-    public static String formatTime(long time){
+    public static String formatTime(long time) {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date date = new Date(time);
-        return  format.format(date);
+        return format.format(date);
     }
-    public static String formatDay(long time){
+
+    public static String formatDay(long time) {
         SimpleDateFormat format = new SimpleDateFormat("yyyy年M月d日");
         Date date = new Date(time);
-        return  format.format(date);
+        return format.format(date);
     }
-    public static String getWeekOfYear(long time){
+
+    public static String getWeekOfYear(long time) {
         Date date = new Date(time);
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(date);
         return String.valueOf(calendar.get(Calendar.WEEK_OF_YEAR));
     }
 
-    public static String getYear(long time){
+    public static String getYear(long time) {
         SimpleDateFormat format = new SimpleDateFormat("yyyy");
         Date date = new Date(time);
-        return  format.format(date);
+        return format.format(date);
     }
-    public static String getMonthOfYear(long time){
+
+    public static String getMonthOfYear(long time) {
         SimpleDateFormat format = new SimpleDateFormat("MM");
         Date date = new Date(time);
-        return  format.format(date);
+        return format.format(date);
     }
-    public static String getDay(long time){
+
+    public static String getDay(long time) {
         SimpleDateFormat format = new SimpleDateFormat("dd");
         Date date = new Date(time);
-        return  format.format(date);
+        return format.format(date);
     }
-    public static String getYearAndMonth(long time){
+
+    public static String getYearAndMonth(long time) {
         SimpleDateFormat format = new SimpleDateFormat("yyyy年M月");
         Date date = new Date(time);
-        return  format.format(date);
+        return format.format(date);
     }
-    public static Long getPreMonth(long time){
+
+    public static Long getPreMonth(long time) {
         Date date = new Date(time);
         Calendar c = Calendar.getInstance();
         c.setTime(date);
-        c.add(Calendar.MONTH,-1);
+        c.add(Calendar.MONTH, -1);
         return c.getTimeInMillis();
     }
-    public static Long getNextMonth(long time){
+
+    public static Long getNextMonth(long time) {
         Date date = new Date(time);
         Calendar c = Calendar.getInstance();
         c.setTime(date);
-        c.add(Calendar.MONTH,+1);
+        c.add(Calendar.MONTH, +1);
         return c.getTimeInMillis();
     }
 

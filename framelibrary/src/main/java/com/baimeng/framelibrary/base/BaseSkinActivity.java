@@ -43,21 +43,14 @@ public abstract class BaseSkinActivity extends BaseActivity implements LayoutInf
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
-
+        //仿源码拦截view创建
         LayoutInflater layoutInflater = LayoutInflater.from(this);
+        //设置Factory
         LayoutInflaterCompat.setFactory(layoutInflater, this);
-
-
-        /*LayoutInflater layoutInflater = LayoutInflater.from(this);
-        LayoutInflaterCompat.setFactory(layoutInflater, new LayoutInflaterFactory() {
-            @Override
-            public View onCreateView(View parent, String name, Context context, AttributeSet attrs) {
-
-            }
-        });*/
         super.onCreate(savedInstanceState);
     }
 
+    //每个控件创建时都会回调这个方法
     @Override
     public View onCreateView(View parent, String name, Context context, AttributeSet attrs) {
 
@@ -70,10 +63,12 @@ public abstract class BaseSkinActivity extends BaseActivity implements LayoutInf
         // Log.e(TAG, view + "");
 
         // 2.1 一个activity的布局肯定对应多个这样的 SkinView
-        Log.i("view","++++++++++++++++++++++"+name);
+
+        //如果创建好的view不为null，就去解析view的属性
         if(view != null) {
-            Log.i("view!=null","++++++++++++++++++++++"+name);
+            //将解析好的可以换肤的属性存入集合
             List<SkinAttr> skinAttrs = SkinAttrSupport.getSkinAttrs(context, attrs);
+            //将view和属性集合封装成SkinView
             SkinView skinView = new SkinView(view,skinAttrs);
             // 3.统一交给SkinManager管理
             managerSkinView(skinView);

@@ -20,8 +20,7 @@ public class UiUtils {
             method.setAccessible(true);
             method.invoke(popupWindow, touchModal);
 
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 

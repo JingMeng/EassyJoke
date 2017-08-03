@@ -5,10 +5,11 @@ package com.baimeng.library.utils;
  */
 public class CommonUtils {
     private static long lastClickTime;
+
     public static boolean isFastDoubleClick() {
         long time = System.currentTimeMillis();
         long timeD = time - lastClickTime;
-        if ( 0 < timeD && timeD < 1200) {
+        if (0 < timeD && timeD < 1200) {
             return true;
 
         }
@@ -16,10 +17,10 @@ public class CommonUtils {
         return false;
     }
 
-    public static boolean isLongTimeClick(){
+    public static boolean isLongTimeClick() {
         long time = System.currentTimeMillis();
         long timeD = time - lastClickTime;
-        if ( 0 < timeD && timeD < 10000) {
+        if (0 < timeD && timeD < 10000) {
             return true;
 
         }

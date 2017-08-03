@@ -11,35 +11,35 @@ import java.util.regex.Pattern;
  * Created by BaiMeng on 2017/6/28.
  */
 public class TextColorUtils {
-    public static SpannableString matcherSearchTitle (int color , String text , String keyword){
+    public static SpannableString matcherSearchTitle(int color, String text, String keyword) {
         String string = text.toLowerCase();
-        String key = keyword.toLowerCase() ;
+        String key = keyword.toLowerCase();
 
         Pattern pattern = Pattern.compile(key);
         Matcher matcher = pattern.matcher(string);
 
         SpannableString ss = new SpannableString(text);
-        while (matcher.find()){
-            int start = matcher.start() ;
+        while (matcher.find()) {
+            int start = matcher.start();
             int end = matcher.end();
-            ss.setSpan(new ForegroundColorSpan(color),start,end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            ss.setSpan(new ForegroundColorSpan(color), start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         }
-        return ss ;
+        return ss;
     }
 
-    public static SpannableString matcherSearchTitleContain(int color , String text , String keyword){
+    public static SpannableString matcherSearchTitleContain(int color, String text, String keyword) {
         String string = text.toLowerCase();
-        String key = keyword.toLowerCase() ;
+        String key = keyword.toLowerCase();
 
         Pattern pattern = Pattern.compile(key);
         Matcher matcher = pattern.matcher(string);
 
         SpannableString ss = new SpannableString(text);
-        while (matcher.find()){
-            int start = matcher.start() -1 ;
-            int end = matcher.end()+1;
-            ss.setSpan(new ForegroundColorSpan(color),start,end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        while (matcher.find()) {
+            int start = matcher.start() - 1;
+            int end = matcher.end() + 1;
+            ss.setSpan(new ForegroundColorSpan(color), start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         }
-        return ss ;
+        return ss;
     }
 }

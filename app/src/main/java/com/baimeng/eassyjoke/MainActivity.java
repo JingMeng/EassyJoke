@@ -1,8 +1,13 @@
 package com.baimeng.eassyjoke;
 
 import android.Manifest;
+import android.content.ComponentName;
 import android.content.Context;
+import android.content.Intent;
+import android.content.ServiceConnection;
 import android.os.Environment;
+import android.os.IBinder;
+import android.os.RemoteException;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -21,6 +26,7 @@ import com.baimeng.library.ioc.OnClick;
 import com.baimeng.library.ioc.ViewById;
 import com.baimeng.library.utils.LogUtils;
 import com.baimeng.library.utils.XPermissionUtils;
+import com.sinieco.mplinechart.calculate;
 
 import java.io.File;
 import java.io.IOException;
@@ -31,16 +37,35 @@ public class MainActivity extends BaseSkinActivity {
     @ViewById(R.id.sample_text)
     private Button tv;
     @ViewById(R.id.parent)
-    private LinearLayout mParent ;
+    private LinearLayout mParent;
 
-    int i = 0 ;
+    int i = 0;
+
+    private calculate aidl;
+
+    ServiceConnection conn = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+            //此处的aidl是一个代理
+            aidl = calculate.Stub.asInterface(service);
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+            aidl = null;
+        }
+    };
+
     @Override
     protected void initData() {
+
+        //绑定服务
+        bindService();
         tv.setText("口活的活好");
 
         //获取本地内存卡中的fix.patch
-        XPermissionUtils.requestPermissions(this,0,new String [] {android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                android.Manifest.permission.READ_EXTERNAL_STORAGE},new XPermissionUtils.OnPermissionListener(){
+        XPermissionUtils.requestPermissions(this, 0, new String[]{android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                android.Manifest.permission.READ_EXTERNAL_STORAGE}, new XPermissionUtils.OnPermissionListener() {
             @Override
             public void onPermissionGranted() {
                 //阿里的热修复
@@ -82,28 +107,35 @@ public class MainActivity extends BaseSkinActivity {
 //        task.execute();
     }
 
+    private void bindService() {
+        Intent intent = new Intent();
+        intent.setAction("com.sinieco.mplinechart");
+        intent.setPackage("com.sinieco.mplinechart");
+        bindService(intent, conn, Context.BIND_AUTO_CREATE);
+    }
+
     private void fixDexBug() {
         File fixFile = new File(Environment.getExternalStorageDirectory(), "fix.dex");
-        if(fixFile.exists()){
+        if (fixFile.exists()) {
             FixDexManager fixDexManager = new FixDexManager(this);
             try {
                 fixDexManager.fixDex(fixFile.getAbsolutePath());
-                Toast.makeText(this,"我的修复成功",Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "我的修复成功", Toast.LENGTH_SHORT).show();
             } catch (Exception e) {
-                Toast.makeText(this,"我的修复失败",Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "我的修复失败", Toast.LENGTH_SHORT).show();
                 e.printStackTrace();
             }
         }
     }
 
     private void aliFixBug() {
-        File fixFile = new File (Environment.getExternalStorageDirectory(),"fix.apatch");
-        if(fixFile.exists()){
+        File fixFile = new File(Environment.getExternalStorageDirectory(), "fix.apatch");
+        if (fixFile.exists()) {
             try {
                 BaseApplication.patchManager.addPatch(fixFile.getAbsolutePath());
-                Toast.makeText(MainActivity.this,"Bug修复成功",Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, "Bug修复成功", Toast.LENGTH_SHORT).show();
             } catch (IOException e) {
-                Toast.makeText(MainActivity.this,"Bug修复失败",Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, "Bug修复失败", Toast.LENGTH_SHORT).show();
                 e.printStackTrace();
             }
         }
@@ -117,14 +149,14 @@ public class MainActivity extends BaseSkinActivity {
                 , new XPermissionUtils.OnPermissionListener() {
                     @Override
                     public void onPermissionGranted() {
-                        Log.i("TAG==========","获取到权限");
+                        Log.i("TAG==========", "获取到权限");
                         //请求网络
                         requestNet();
                     }
 
                     @Override
                     public void onPermissionDenied() {
-                        Log.i("TAG==========","拒绝权限");
+                        Log.i("TAG==========", "拒绝权限");
                     }
                 });
     }
@@ -132,7 +164,7 @@ public class MainActivity extends BaseSkinActivity {
     private void requestNet() {
         //测试联网框架
         Map<String, Object> params = new HashMap<>();
-        params.put("key","a0126d32f1215b0e769fd7c352bafd01");
+        params.put("key", "a0126d32f1215b0e769fd7c352bafd01");
 //        HttpUtils.with(this).
 //                isCache(true).
 //                get().url("http://v.juhe.cn/WNXG/city")
@@ -203,25 +235,32 @@ public class MainActivity extends BaseSkinActivity {
         setContentView(R.layout.activity_main);
     }
 
-    @OnClick({R.id.sample_text,R.id.iv_img})
+    @OnClick({R.id.sample_text, R.id.iv_img})
     @CheckNet
-    private void onClick(View view){
-        if (view.getId()==R.id.sample_text){
+    private void onClick(View view) {
+        if (view.getId() == R.id.sample_text) {
+            Log.i("aidl==null?", "" + (aidl == null ? true : false));
+            try {
+                Toast.makeText(this, "计算结果是：" + aidl.add(3, 4), Toast.LENGTH_SHORT).show();
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
+
             LogUtils.e("text点击");
             showDialog();
             //恢复默认皮肤
             SkinManager.getInstance().restoreDefault();
-        }else if(view.getId() == R.id.iv_img){
+        } else if (view.getId() == R.id.iv_img) {
 //            Toast.makeText(this, "测试："+ (2/0), Toast.LENGTH_SHORT).show();
-            Log.e("=======","img点击");
-            Log.e("什麽貴？","新皮膚");
-            String skinPath = Environment.getExternalStorageDirectory().getAbsolutePath()+File.separator+"blue.skin";
+            Log.e("=======", "img点击");
+            Log.e("什麽貴？", "新皮膚");
+            String skinPath = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "blue.skin";
             int result = SkinManager.getInstance().loadSkin(skinPath);
-           // changeSkin();
-          //  showDialog();
+            // changeSkin();
+            //  showDialog();
 
             //测试数据库框架
-          //  IDaoSupport<Person> dao = DaoSupportFactory.getFactory().getDao(Person.class);
+            //  IDaoSupport<Person> dao = DaoSupportFactory.getFactory().getDao(Person.class);
             //插入测试
 //            List<Person> persons = new ArrayList<>();
 //            for (int i = 0 ; i < 5000 ; i++){
@@ -256,7 +295,7 @@ public class MainActivity extends BaseSkinActivity {
 
     private void changeSkin() {
         LogUtils.e("什麽鬼？");
-        LogUtils.i("i==="+i+"====i%2======"+i%2);
+        LogUtils.i("i===" + i + "====i%2======" + i % 2);
 //        i++ ;
 //        if(i%2 == 0){
 //            //默认皮肤
@@ -264,9 +303,9 @@ public class MainActivity extends BaseSkinActivity {
 //            int result = SkinManager.getInstance().restoreDefault();
 //
 //        }else if(i%2 == 1){
-            LogUtils.i("新皮膚");
-            String skinPath = Environment.getExternalStorageDirectory().getAbsolutePath()+File.separator+"blue.skin";
-            int result = SkinManager.getInstance().loadSkin(skinPath);
+        LogUtils.i("新皮膚");
+        String skinPath = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "blue.skin";
+        int result = SkinManager.getInstance().loadSkin(skinPath);
 //        }
 
     }
@@ -297,16 +336,15 @@ public class MainActivity extends BaseSkinActivity {
 //            e.printStackTrace();
 //        }
 //    }
-
     private void showDialog() {
         new AlertDialog.Builder(this)
                 .setContentView(R.layout.dialog)
-                .setText(R.id.weibo,"微博")
-                .setText(R.id.weixin,"微信")
+                .setText(R.id.weibo, "微博")
+                .setText(R.id.weixin, "微信")
                 .setOnClickListener(R.id.share, new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Toast.makeText(MainActivity.this,"分享",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(MainActivity.this, "分享", Toast.LENGTH_SHORT).show();
                     }
                 })
                 .fromBottom(true)
@@ -320,5 +358,11 @@ public class MainActivity extends BaseSkinActivity {
     public void changeSkin(SkinResources skinResources) {
         // 改变皮肤监听
         //控制自定义控件护肤
+    }
+
+    @Override
+    protected void onDestroy() {
+        unbindService(conn);
+        super.onDestroy();
     }
 }

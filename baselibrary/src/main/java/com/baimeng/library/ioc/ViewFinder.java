@@ -10,17 +10,18 @@ import com.baimeng.library.R;
  */
 
 public class ViewFinder {
-    private Activity mActivity  ;
-    private View mView ;
+    private Activity mActivity;
+    private View mView;
+
     public ViewFinder(View view) {
-        this.mView = view ;
+        this.mView = view;
     }
 
     public ViewFinder(Activity activity) {
-        this.mActivity = activity ;
+        this.mActivity = activity;
     }
 
-    public View findViewById(int id){
-        return mActivity != null? mActivity.findViewById(id):mView.findViewById(id);
+    public View findViewById(int id) {
+        return mActivity != null ? mActivity.findViewById(id) : mView.findViewById(id);
     }
 }

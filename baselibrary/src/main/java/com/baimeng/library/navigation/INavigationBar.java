@@ -7,6 +7,7 @@ package com.baimeng.library.navigation;
 public interface INavigationBar {
     //头部的规范
     public int bindLayoutId();
+
     //绑定头部参数
     public void applyView();
 }
