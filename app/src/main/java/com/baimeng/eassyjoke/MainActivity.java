@@ -5,6 +5,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.os.Build;
 import android.os.Environment;
 import android.os.IBinder;
 import android.os.RemoteException;
@@ -14,6 +15,9 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.baimeng.eassyjoke.service.GuardService;
+import com.baimeng.eassyjoke.service.JobWakeUpService;
+import com.baimeng.eassyjoke.service.MessageService;
 import com.baimeng.framelibrary.base.BaseApplication;
 import com.baimeng.framelibrary.base.BaseSkinActivity;
 import com.baimeng.framelibrary.base.DefaultNavigationBar;
@@ -58,7 +62,11 @@ public class MainActivity extends BaseSkinActivity {
 
     @Override
     protected void initData() {
-
+        startService(new Intent(this, MessageService.class));
+        startService(new Intent(this, GuardService.class));
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){
+            startService(new Intent(this, JobWakeUpService.class));
+        }
         //绑定服务
         bindService();
         tv.setText("口活的活好");
@@ -239,7 +247,6 @@ public class MainActivity extends BaseSkinActivity {
     @CheckNet
     private void onClick(View view) {
         if (view.getId() == R.id.sample_text) {
-            Log.i("aidl==null?", "" + (aidl == null ? true : false));
             try {
                 Toast.makeText(this, "计算结果是：" + aidl.add(3, 4), Toast.LENGTH_SHORT).show();
             } catch (RemoteException e) {
