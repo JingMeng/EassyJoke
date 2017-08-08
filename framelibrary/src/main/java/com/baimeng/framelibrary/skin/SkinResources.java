@@ -54,6 +54,7 @@ public class SkinResources {
     public Drawable getDrawableByName(String resName){
         try {
             int resId = mSkinResource.getIdentifier(resName, "drawable", mPackageName);
+            Log.i("eeeeeee","eeeee======"+resId);
             Drawable drawable = mSkinResource.getDrawable(resId);
             return drawable ;
         }catch (Exception e){

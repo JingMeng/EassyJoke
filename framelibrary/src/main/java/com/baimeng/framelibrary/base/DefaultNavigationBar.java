@@ -25,14 +25,19 @@ public class DefaultNavigationBar extends AbsNavigationBar<DefaultNavigationBar.
 
     @Override
     public void applyView() {
-        //绑定效果
-        setText(R.id.title_text ,getParams().mTitle);
-        setText(R.id.right_text,getParams().mRightText);
-        setText(R.id.left_text,getParams().mLeftText);
+        // 绑定效果
+        setText(R.id.title, getParams().mTitle);
+        setText(R.id.right_text, getParams().mRightText);
 
-        setOnClickListener(R.id.right_text,getParams().mRightClickListener);
-        //左边写一个默认的finish activity
-        setOnClickListener(R.id.left_text,getParams().mLeftClickListener);
+        setOnClickListener(R.id.right_text, getParams().mRightClickListener);
+        // 左边 要写一个默认的  finishActivity
+        setOnClickListener(R.id.back,getParams().mLeftClickListener);
+
+        setVisibility(R.id.back,getParams().leftIconVisible);
+    }
+
+    private void setVisibility(int viewId, int visibility) {
+        findViewById(viewId).setVisibility(visibility);
     }
 
     public static class Builder extends AbsNavigationBar.Builder{
@@ -92,6 +97,11 @@ public class DefaultNavigationBar extends AbsNavigationBar<DefaultNavigationBar.
             return this ;
         }
 
+        public Builder hideLeftIcon() {
+            P.leftIconVisible = View.INVISIBLE ;
+            return this ;
+        }
+
 
         public static class DefaultNavigationBarParams extends AbsNavigationParams{
 
@@ -108,6 +118,7 @@ public class DefaultNavigationBar extends AbsNavigationBar<DefaultNavigationBar.
             };
             public View.OnClickListener mRightClickListener;
             public String mLeftText;
+            public int leftIconVisible = View.VISIBLE;
 
             DefaultNavigationBarParams(Context context, ViewGroup parent) {
                 super(context, parent);

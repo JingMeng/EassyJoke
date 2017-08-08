@@ -1,23 +1,19 @@
-package com.baimeng.eassyjoke;
+package com.baimeng.eassyjoke.activity;
 
 import android.Manifest;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
-import android.os.Build;
 import android.os.Environment;
 import android.os.IBinder;
-import android.os.RemoteException;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import com.baimeng.eassyjoke.service.GuardService;
-import com.baimeng.eassyjoke.service.JobWakeUpService;
-import com.baimeng.eassyjoke.service.MessageService;
+import com.baimeng.eassyjoke.R;
 import com.baimeng.framelibrary.base.BaseApplication;
 import com.baimeng.framelibrary.base.BaseSkinActivity;
 import com.baimeng.framelibrary.base.DefaultNavigationBar;
@@ -30,7 +26,6 @@ import com.baimeng.library.ioc.OnClick;
 import com.baimeng.library.ioc.ViewById;
 import com.baimeng.library.utils.LogUtils;
 import com.baimeng.library.utils.XPermissionUtils;
-import com.sinieco.mplinechart.calculate;
 
 import java.io.File;
 import java.io.IOException;
@@ -45,30 +40,30 @@ public class MainActivity extends BaseSkinActivity {
 
     int i = 0;
 
-    private calculate aidl;
+   // private calculate aidl;
 
     ServiceConnection conn = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
             //此处的aidl是一个代理
-            aidl = calculate.Stub.asInterface(service);
+          //  aidl = calculate.Stub.asInterface(service);
         }
 
         @Override
         public void onServiceDisconnected(ComponentName name) {
-            aidl = null;
+           // aidl = null;
         }
     };
 
     @Override
     protected void initData() {
-        startService(new Intent(this, MessageService.class));
-        startService(new Intent(this, GuardService.class));
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){
-            startService(new Intent(this, JobWakeUpService.class));
-        }
+//        startService(new Intent(this, MessageService.class));
+//        startService(new Intent(this, GuardService.class));
+//        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){
+//            startService(new Intent(this, JobWakeUpService.class));
+//        }
         //绑定服务
-        bindService();
+      //  bindService();
         tv.setText("口活的活好");
 
         //获取本地内存卡中的fix.patch
@@ -247,11 +242,11 @@ public class MainActivity extends BaseSkinActivity {
     @CheckNet
     private void onClick(View view) {
         if (view.getId() == R.id.sample_text) {
-            try {
-                Toast.makeText(this, "计算结果是：" + aidl.add(3, 4), Toast.LENGTH_SHORT).show();
-            } catch (RemoteException e) {
-                e.printStackTrace();
-            }
+//            try {
+//                Toast.makeText(this, "计算结果是：" + aidl.add(3, 4), Toast.LENGTH_SHORT).show();
+//            } catch (RemoteException e) {
+//                e.printStackTrace();
+//            }
 
             LogUtils.e("text点击");
             showDialog();
@@ -263,6 +258,7 @@ public class MainActivity extends BaseSkinActivity {
             Log.e("什麽貴？", "新皮膚");
             String skinPath = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "blue.skin";
             int result = SkinManager.getInstance().loadSkin(skinPath);
+            Log.e("换肤情况","=================================="+result);
             // changeSkin();
             //  showDialog();
 

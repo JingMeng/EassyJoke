@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:id="@+id/parent"
     android:orientation="vertical"
-    tools:context="com.baimeng.eassyjoke.MainActivity">
+    tools:context="com.baimeng.eassyjoke.activity.MainActivity">
 
     <Button
         android:id="@+id/sample_text"

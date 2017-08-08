@@ -44,6 +44,8 @@ public class SkinManager {
         this.mContext = context.getApplicationContext();
         // 每一次打开应用都会到这里来，防止皮肤被任意删除，做一些措施
         String skinPath = SkinPreUtils.getInstance(mContext).getSkinPath();
+        Log.e("SkinManager","=================init");
+        Log.e("上次路径==================",skinPath+"=============路径");
         File file = new File(skinPath);
         if(!file.exists()){
             // 皮肤apk不存在，清空皮肤
@@ -53,6 +55,7 @@ public class SkinManager {
         // 最好做一下  能不能获取到包名，检查是否是个正确的皮肤apk
         String packageName = mContext.getPackageManager()
                 .getPackageArchiveInfo(skinPath, PackageManager.GET_ACTIVITIES).packageName;
+        Log.i("上次包名==================",packageName);
         if(TextUtils.isEmpty(packageName)){
             SkinPreUtils.getInstance(mContext).clearSkinPath();
             return;
