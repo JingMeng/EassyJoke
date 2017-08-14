@@ -16,8 +16,8 @@ import com.baimeng.library.ioc.ViewUtils;
  */
 
 public abstract class BaseFragment extends Fragment {
-    private Context mContext ;
-    private View rootView ;
+    public Context mContext ;
+    public View rootView ;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {

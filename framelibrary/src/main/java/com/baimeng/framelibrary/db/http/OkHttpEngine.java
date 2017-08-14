@@ -1,6 +1,7 @@
 package com.baimeng.framelibrary.db.http;
 
 import android.content.Context;
+import android.os.Handler;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -32,6 +33,9 @@ import okhttp3.Response;
  * Description: OkHttp默认的引擎
  */
 public class OkHttpEngine implements IHttpEngine {
+
+    private static Handler mHandler = new Handler();
+
     private static OkHttpClient mOkHttpClient = new OkHttpClient();
 
     @Override
@@ -51,16 +55,26 @@ public class OkHttpEngine implements IHttpEngine {
         mOkHttpClient.newCall(request).enqueue(
                 new Callback() {
                     @Override
-                    public void onFailure(Call call, IOException e) {
-                        callBack.onError(e);
+                    public void onFailure(Call call, final IOException e) {
+                        mHandler.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                callBack.onError(e);
+                            }
+                        });
                     }
 
                     @Override
                     public void onResponse(Call call, Response response) throws IOException {
                         // 这个 两个回掉方法都不是在主线程中
-                        String result = response.body().string();
+                        final String result = response.body().string();
                         Log.e("Post返回结果：", jointUrl);
-                        callBack.onSuccess(result);
+                        mHandler.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                callBack.onSuccess(result);
+                            }
+                        });
                     }
                 }
         );
@@ -147,14 +161,19 @@ public class OkHttpEngine implements IHttpEngine {
         Request request = requestBuilder.build();
         mOkHttpClient.newCall(request).enqueue(new Callback() {
             @Override
-            public void onFailure(Call call, IOException e) {
+            public void onFailure(Call call, final IOException e) {
                 Log.i("请求借口失败==========",e.toString());
-                callBack.onError(e);
+                mHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        callBack.onError(e);
+                    }
+                });
             }
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
-                String resultJson = response.body().string();
+                final String resultJson = response.body().string();
                 Log.i("请求借口成功==========",resultJson);
                 // 获取数据之后会执行成功方法
                 if (isCache) {
@@ -169,7 +188,12 @@ public class OkHttpEngine implements IHttpEngine {
                     }
                 }
                 // 2.2 执行成功方法
-                callBack.onSuccess(resultJson);
+                mHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        callBack.onSuccess(resultJson);
+                    }
+                });
                 Log.e("Get返回结果：", resultJson);
                 if (isCache) {
                     // 2.3 缓存数据

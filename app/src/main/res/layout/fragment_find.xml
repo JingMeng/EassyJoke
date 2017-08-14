@@ -8,9 +8,10 @@
     android:clipToPadding="false"
     android:layout_height="match_parent">
 
-    <!--<com.example.administrator.framelibrary.recyclerview.view.WrapRecyclerView-->
-        <!--android:id="@+id/recycler_view"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="match_parent"/>-->
+    <com.baimeng.framelibrary.recyclerview.commonadapter.wrapper.WrapperRecyclerView
+        android:id="@+id/wrv_find_fragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    </com.baimeng.framelibrary.recyclerview.commonadapter.wrapper.WrapperRecyclerView>
 
 </LinearLayout>

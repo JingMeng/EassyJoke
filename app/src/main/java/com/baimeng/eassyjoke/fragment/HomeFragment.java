@@ -10,8 +10,8 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
 import com.baimeng.eassyjoke.R;
-import com.baimeng.eassyjoke.indicator.ColorTrackTextContainer;
-import com.baimeng.eassyjoke.indicator.IndicatorAdapter;
+import com.baimeng.framelibrary.indicator.ColorTrackTextContainer;
+import com.baimeng.framelibrary.indicator.IndicatorAdapter;
 import com.baimeng.framelibrary.indicator.ColorTrackTextView;
 import com.baimeng.library.base.BaseFragment;
 import com.baimeng.library.ioc.ViewById;

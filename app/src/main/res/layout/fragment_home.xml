@@ -6,7 +6,7 @@
     android:orientation="vertical">
 
 
-    <com.baimeng.eassyjoke.indicator.ColorTrackTextContainer
+    <com.baimeng.framelibrary.indicator.ColorTrackTextContainer
         android:layout_width="match_parent"
         android:orientation="horizontal"
         app:tabVisibleNums="6"

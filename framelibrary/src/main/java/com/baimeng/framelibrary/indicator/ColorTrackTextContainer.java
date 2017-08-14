@@ -1,4 +1,4 @@
-package com.baimeng.eassyjoke.indicator;
+package com.baimeng.framelibrary.indicator;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -7,7 +7,7 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.widget.HorizontalScrollView;
 
-import com.baimeng.eassyjoke.R;
+import com.baimeng.framelibrary.R;
 
 
 /**
