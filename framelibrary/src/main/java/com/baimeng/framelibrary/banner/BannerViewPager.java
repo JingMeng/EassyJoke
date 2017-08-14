@@ -155,7 +155,4 @@ public class BannerViewPager extends ViewPager {
             }
         }
     };
-
-
-
 }

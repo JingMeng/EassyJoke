@@ -9,6 +9,7 @@ import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.Gravity;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -193,19 +194,18 @@ public class BannerView extends RelativeLayout {
         mBannerVP.startRoll();
     }
 
-//    @Override
-//    public boolean dispatchTouchEvent(MotionEvent ev) {
-//        switch (ev.getAction()){
-//            case MotionEvent.ACTION_DOWN:
-//                mBannerVP.stopRoll();
-//                return false;
-//            case MotionEvent.ACTION_MOVE:
-//                return false ;
-//            case MotionEvent.ACTION_CANCEL:
-//            case MotionEvent.ACTION_UP:
-//                mBannerVP.startRoll();
-//                return false ;
-//        }
-//        return false ;
-//    }
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        switch (ev.getAction()){
+            case MotionEvent.ACTION_DOWN:
+                mBannerVP.stopRoll();
+                requestDisallowInterceptTouchEvent(true);
+                return true ;
+            case MotionEvent.ACTION_UP:
+                mBannerVP.startRoll();
+                requestDisallowInterceptTouchEvent(false);
+                return false ;
+        }
+        return false ;
+    }
 }
