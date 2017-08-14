@@ -11,7 +11,7 @@ import com.baimeng.framelibrary.recyclerview.commonadapter.ViewHolder;
 
 import java.util.List;
 
-import ImageLoader.GlideImageLoader;
+import com.baimeng.eassyjoke.ImageLoader.GlideImageLoader;
 
 /**
  * Created by BaiMeng on 2017/8/14.

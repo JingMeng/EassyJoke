@@ -16,7 +16,7 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activity.WelcomActivity">
+        <activity android:name=".activity.TestImageActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -32,6 +32,7 @@
         <service android:name=".service.JobWakeUpService"
             android:enabled="true"
             android:permission="android.permission.BIND_JOB_SERVICE"/>
+        <activity android:name=".imageselector.ImageSelectorActivity"/>
     </application>
 
 </manifest>
