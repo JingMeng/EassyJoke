@@ -2,11 +2,13 @@ package com.baimeng.eassyjoke.imageselector;
 
 import android.text.TextUtils;
 
+import java.io.Serializable;
+
 /**
  * Created by Administrator on 2017/8/14.
  */
 
-public class ImageEntity {
+public class ImageEntity implements Serializable {
     public String path ;
     public String name ;
     public long time ;

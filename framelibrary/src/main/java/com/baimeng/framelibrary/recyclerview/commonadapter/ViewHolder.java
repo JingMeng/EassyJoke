@@ -59,10 +59,14 @@ public class ViewHolder extends RecyclerView.ViewHolder {
             return mPath ;
         }
     }
-    public ViewHolder setOnClickListener(int resId , View.OnClickListener listener){
-        View view = getView(resId);
-        view.setOnClickListener(listener);
+    public ViewHolder setOnItemClickListener(View.OnClickListener listener){
+        itemView.setOnClickListener(listener);
         return this;
+    }
+
+    public ViewHolder setOnItemLongClickListener(View.OnLongClickListener listener){
+        itemView.setOnLongClickListener(listener);
+        return this ;
     }
 
     public < T extends View> T getView(int resId) {

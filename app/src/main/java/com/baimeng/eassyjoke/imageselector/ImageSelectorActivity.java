@@ -11,6 +11,9 @@ import android.provider.MediaStore;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.TextView;
 
 import com.baimeng.eassyjoke.R;
 import com.baimeng.framelibrary.base.BaseSkinActivity;
@@ -27,7 +30,8 @@ import java.util.ArrayList;
  * 图片选择器
  */
 
-public class ImageSelectorActivity extends BaseSkinActivity {
+public class ImageSelectorActivity extends BaseSkinActivity implements View.OnClickListener  {
+
     //图片选择多选模式
     public static final int MODE_MULTI = 0x0011 ;
     //图片选择单选模式
@@ -36,6 +40,8 @@ public class ImageSelectorActivity extends BaseSkinActivity {
     public static String EXTRA_SELECT_MODE = "图片选择模式";
     public static String EXTRA_DEFAULT_SELECTED_LIST = "已选择的图片的地址集合";
     public static  String  EXTRA_SHOW_CAMERA = "是否显示相机";
+    // 返回选择图片列表的EXTRA_KEY
+    public static final String EXTRA_RESULT = "选择完成的图片集合";
     //图片单选还是多选int类型 type
     private int mMode = MODE_MULTI ;
 
@@ -46,12 +52,21 @@ public class ImageSelectorActivity extends BaseSkinActivity {
     private int mMaxCount = 8 ;
 
     //ArrayList<String> 已经选择好的图片
-    private ArrayList<String> mResultList ;
+    private ArrayList<ImageEntity> mResultList ;
     //加载全部数据
     private static final int LOADER_TYPE = 0x0021;
 
     @ViewById(R.id.image_list_rv)
     private RecyclerView mImage_list_rv ;
+
+    //图片选择的数量显示的textview
+    @ViewById(R.id.select_num)
+    private TextView mSelectNumTv;
+    //预览textview
+    @ViewById(R.id.select_preview)
+    private TextView mSelectPreview;
+    @ViewById(R.id.select_finish)
+    private TextView mSelectFinish ;
 
     @Override
     public void changeSkin(SkinResources skinResources) {
@@ -64,7 +79,12 @@ public class ImageSelectorActivity extends BaseSkinActivity {
         mMaxCount = intent.getIntExtra(EXTRA_SELECT_COUNT,mMaxCount);
         mMode = intent.getIntExtra(EXTRA_SELECT_MODE,mMode);
         mShowCamera = intent.getBooleanExtra(EXTRA_SHOW_CAMERA,mShowCamera);
-        mResultList = intent.getStringArrayListExtra(EXTRA_DEFAULT_SELECTED_LIST);
+        mResultList = (ArrayList<ImageEntity>) intent.getSerializableExtra(EXTRA_DEFAULT_SELECTED_LIST);
+
+
+
+        Log.e("mResultList == null ？ ",(mResultList == null? true : false)+"");
+
         XPermissionUtils.requestPermissions(this, 0, new String[]{
                         Manifest.permission.READ_EXTERNAL_STORAGE,
                         Manifest.permission.WRITE_EXTERNAL_STORAGE}
@@ -79,6 +99,7 @@ public class ImageSelectorActivity extends BaseSkinActivity {
                         Log.i("TAG==========", "拒绝权限");
                     }
                 });
+        mSelectFinish.setOnClickListener(this);
     }
 
     @Override
@@ -97,6 +118,7 @@ public class ImageSelectorActivity extends BaseSkinActivity {
 
     @Override
     protected void setContentView() {
+        Log.e("打开ImageSelectorActivity","==============");
         setContentView(R.layout.activity_image_selector);
     }
 
@@ -169,8 +191,41 @@ public class ImageSelectorActivity extends BaseSkinActivity {
      * @param images
      */
     private void showListData(ArrayList<ImageEntity> images) {
-        SelectImageListAdapter listAdapter = new SelectImageListAdapter(images,this);
+        SelectImageListAdapter listAdapter = new SelectImageListAdapter(images,this,mResultList,mMaxCount);
         mImage_list_rv.setLayoutManager(new GridLayoutManager(this , 4));
+        listAdapter.setOnSelectImageListener(new SelectImageListener(){
+            @Override
+            public void onSelectImage() {
+                exchangeViewShow();
+            }
+        });
         mImage_list_rv.setAdapter(listAdapter);
+    }
+
+    private void exchangeViewShow (){
+        if(mResultList.size() > 0){
+            mSelectPreview.setEnabled(true);
+            mSelectPreview.setOnClickListener(this);
+        }else {
+            mSelectPreview.setEnabled(false);
+            mSelectPreview.setOnClickListener(null);
+        }
+        mSelectNumTv.setText(mResultList.size()+"/"+mMaxCount);
+    }
+
+    @Override
+    public void onClick(View v) {
+
+        switch (v.getId()){
+            case R.id.select_finish:
+                Intent intent = new Intent();
+                intent.putExtra(EXTRA_RESULT,mResultList);
+                setResult(RESULT_OK,intent);
+                finish();
+                break ;
+            case R.id.select_preview :
+                //预览textviewdian点击事件
+                break ;
+        }
     }
 }

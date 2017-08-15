@@ -2,11 +2,13 @@ package com.baimeng.framelibrary.base;
 
 import android.app.Activity;
 import android.content.Context;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.baimeng.framelibrary.R;
 import com.baimeng.library.navigation.AbsNavigationBar;
+import com.baimeng.library.utils.LogUtils;
 
 /**
  * Created by Administrator on 2017/7/13.
@@ -56,6 +58,7 @@ public class DefaultNavigationBar extends AbsNavigationBar<DefaultNavigationBar.
         @Override
         public DefaultNavigationBar build() {
             DefaultNavigationBar navigationBar = new DefaultNavigationBar(P);
+            Log.e("P====",P.toString());
             return navigationBar;
         }
 
@@ -122,6 +125,20 @@ public class DefaultNavigationBar extends AbsNavigationBar<DefaultNavigationBar.
 
             DefaultNavigationBarParams(Context context, ViewGroup parent) {
                 super(context, parent);
+            }
+
+            @Override
+            public String toString() {
+                return "DefaultNavigationBarParams{" +
+                        "mTitle='" + mTitle + '\'' +
+                        ", mRightText='" + mRightText + '\'' +
+                        ", mRightIcon=" + mRightIcon +
+                        ", mLeftIcon=" + mLeftIcon +
+                        ", mLeftClickListener=" + mLeftClickListener +
+                        ", mRightClickListener=" + mRightClickListener +
+                        ", mLeftText='" + mLeftText + '\'' +
+                        ", leftIconVisible=" + leftIconVisible +
+                        '}';
             }
         }
     }

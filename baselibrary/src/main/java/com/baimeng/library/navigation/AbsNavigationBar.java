@@ -3,6 +3,7 @@ package com.baimeng.library.navigation;
 import android.app.Activity;
 import android.content.Context;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -51,9 +52,14 @@ public abstract class AbsNavigationBar<P extends AbsNavigationBar.Builder.AbsNav
     //创建并绑定View
     private void createAndBindView() {
         if (mParams.mParent == null) {
-            ViewGroup activityRootView = (ViewGroup) ((Activity) mParams.mContext)
-                    .findViewById(android.R.id.content);
-            mParams.mParent = (ViewGroup) activityRootView.getChildAt(0);
+//            ViewGroup activityRootView = (ViewGroup) ((Activity) mParams.mContext)
+//                    .findViewById(android.R.id.content);
+//            mParams.mParent = (ViewGroup) activityRootView.getChildAt(0);
+
+
+            ViewGroup activityRoot = (ViewGroup) ((Activity)(mParams.mContext))
+                    .getWindow().getDecorView();
+            mParams.mParent = (ViewGroup) activityRoot.getChildAt(0);
         }
         if (mParams.mParent == null) {
             return;
