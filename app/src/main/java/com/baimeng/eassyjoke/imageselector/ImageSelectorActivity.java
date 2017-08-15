@@ -6,13 +6,12 @@ import android.content.CursorLoader;
 import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.TextView;
 
 import com.baimeng.eassyjoke.R;
@@ -20,9 +19,9 @@ import com.baimeng.framelibrary.base.BaseSkinActivity;
 import com.baimeng.framelibrary.base.DefaultNavigationBar;
 import com.baimeng.framelibrary.skin.SkinResources;
 import com.baimeng.library.ioc.ViewById;
+import com.baimeng.library.utils.StatusBarUtil;
 import com.baimeng.library.utils.XPermissionUtils;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 /**
@@ -81,10 +80,6 @@ public class ImageSelectorActivity extends BaseSkinActivity implements View.OnCl
         mShowCamera = intent.getBooleanExtra(EXTRA_SHOW_CAMERA,mShowCamera);
         mResultList = (ArrayList<ImageEntity>) intent.getSerializableExtra(EXTRA_DEFAULT_SELECTED_LIST);
 
-
-
-        Log.e("mResultList == null ？ ",(mResultList == null? true : false)+"");
-
         XPermissionUtils.requestPermissions(this, 0, new String[]{
                         Manifest.permission.READ_EXTERNAL_STORAGE,
                         Manifest.permission.WRITE_EXTERNAL_STORAGE}
@@ -96,7 +91,6 @@ public class ImageSelectorActivity extends BaseSkinActivity implements View.OnCl
 
                     @Override
                     public void onPermissionDenied() {
-                        Log.i("TAG==========", "拒绝权限");
                     }
                 });
         mSelectFinish.setOnClickListener(this);
@@ -114,11 +108,11 @@ public class ImageSelectorActivity extends BaseSkinActivity implements View.OnCl
                 Builder(this).
                 setTitle("所有图片")
                 .build();
+        StatusBarUtil.statusBarTintColor(this, Color.parseColor("#ff261f1f"));
     }
 
     @Override
     protected void setContentView() {
-        Log.e("打开ImageSelectorActivity","==============");
         setContentView(R.layout.activity_image_selector);
     }
 
@@ -218,14 +212,32 @@ public class ImageSelectorActivity extends BaseSkinActivity implements View.OnCl
 
         switch (v.getId()){
             case R.id.select_finish:
-                Intent intent = new Intent();
-                intent.putExtra(EXTRA_RESULT,mResultList);
-                setResult(RESULT_OK,intent);
-                finish();
+                sureSelect();
                 break ;
             case R.id.select_preview :
                 //预览textviewdian点击事件
                 break ;
         }
+    }
+
+    public void sureSelect(){
+        Intent intent = new Intent();
+        intent.putExtra(EXTRA_RESULT,mResultList);
+        setResult(RESULT_OK,intent);
+        finish();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        //拍完照完成一下步骤
+        //1.把照片加入集合
+
+        //2.调用sureSelect()方法
+
+        //3.通知系统本地图片改变，下次进来可以找到这张图片
+        //mTempFile图片文件
+       // sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(mTempFile)));
+
     }
 }
